@@ -1,0 +1,64 @@
+.home {
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+
+  .card {
+    padding: 2em;
+  }
+
+  .read-the-docs {
+    color: #888;
+  }
+
+  @keyframes logo-spin {
+    to {
+      transform: rotate(360deg);
+    }
+
+    from {
+      transform: rotate(0deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+}
+
+$themes: (
+  light: (
+    color: #000,
+  ),
+  dark: (
+    color: #fff,
+  ),
+);
+
+@mixin useTheme() {
+  @each $theme, $map in $themes {
+    html[data-theme='#{$theme}'] & {
+      @each $key, $value in $map {
+        --#{$key}: #{$value};
+      }
+      & {
+        @content;
+      }
+    }
+  }
+}
+
+.abc {
+  width: 100%;
+  @include useTheme() {
+    color: var(--color);
+  }
+}

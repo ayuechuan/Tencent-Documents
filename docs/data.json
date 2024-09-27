@@ -1,0 +1,420 @@
+[
+  {
+    "date": "2024-06-21",
+    "shiftList": [
+      {
+        "name": "中班",
+        "time": {
+          "end": 1718982000,
+          "start": 1718949600
+        },
+        "username": "123456789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1718982000,
+          "start": 1718949600
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719014400,
+          "start": 1718982000
+        },
+        "username": "123456@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1718964000,
+          "start": 1718928000
+        },
+        "username": "456@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-22",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719050400,
+          "start": 1719014400
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719050400,
+          "start": 1719014400
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719068400,
+          "start": 1719036000
+        },
+        "username": "123456789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719068400,
+          "start": 1719036000
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719100800,
+          "start": 1719068400
+        },
+        "username": "123456@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-23",
+    "shiftList": [
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719187200,
+          "start": 1719154800
+        },
+        "username": "123456@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719154800,
+          "start": 1719122400
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719154800,
+          "start": 1719122400
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719136800,
+          "start": 1719100800
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719136800,
+          "start": 1719100800
+        },
+        "username": "12345678@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-24",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719223200,
+          "start": 1719187200
+        },
+        "username": "12345678@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719241200,
+          "start": 1719208800
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719241200,
+          "start": 1719208800
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719273600,
+          "start": 1719241200
+        },
+        "username": "123456@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-25",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719309600,
+          "start": 1719273600
+        },
+        "username": "12345678@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719327600,
+          "start": 1719295200
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719327600,
+          "start": 1719295200
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719360000,
+          "start": 1719327600
+        },
+        "username": "123456789@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-26",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719396000,
+          "start": 1719360000
+        },
+        "username": "12345678@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719446400,
+          "start": 1719414000
+        },
+        "username": "123456789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719414000,
+          "start": 1719381600
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719414000,
+          "start": 1719381600
+        },
+        "username": "456@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-27",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719482400,
+          "start": 1719446400
+        },
+        "username": "12345678@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719482400,
+          "start": 1719446400
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719500400,
+          "start": 1719468000
+        },
+        "username": "123@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719500400,
+          "start": 1719468000
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719532800,
+          "start": 1719500400
+        },
+        "username": "123456789@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-28",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719568800,
+          "start": 1719532800
+        },
+        "username": "12345678@qq.com"
+      },
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719568800,
+          "start": 1719532800
+        },
+        "username": "123456@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719586800,
+          "start": 1719554400
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719586800,
+          "start": 1719554400
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719619200,
+          "start": 1719586800
+        },
+        "username": "123456789@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-29",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719655200,
+          "start": 1719619200
+        },
+        "username": "123456@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719673200,
+          "start": 1719640800
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719673200,
+          "start": 1719640800
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719705600,
+          "start": 1719673200
+        },
+        "username": "123456789@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-30",
+    "shiftList": [
+      {
+        "name": "早班",
+        "time": {
+          "end": 1719741600,
+          "start": 1719705600
+        },
+        "username": "123456@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719759600,
+          "start": 1719727200
+        },
+        "username": "789@qq.com"
+      },
+      {
+        "name": "中班",
+        "time": {
+          "end": 1719759600,
+          "start": 1719727200
+        },
+        "username": "456@qq.com"
+      },
+      {
+        "name": "晚班",
+        "time": {
+          "end": 1719792000,
+          "start": 1719759600
+        },
+        "username": "123@qq.com"
+      }
+    ]
+  },
+  {
+    "date": "2024-07-01",
+    "shiftList": []
+  },
+  {
+    "date": "2024-07-02",
+    "shiftList": []
+  },
+  {
+    "date": "2024-07-03",
+    "shiftList": []
+  },
+  {
+    "date": "2024-07-04",
+    "shiftList": []
+  }
+]
