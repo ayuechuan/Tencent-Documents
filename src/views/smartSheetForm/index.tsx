@@ -1,14 +1,15 @@
-import React from 'react'
+import * as ICONS from '@ant-design/icons'
+import { Form, FormItem, Input, Password, Submit } from '@formily/antd-v5'
 import { createForm } from '@formily/core'
 import { createSchemaField } from '@formily/react'
-import { Form, FormItem, Input, Password, Submit } from '@formily/antd-v5'
-import { Tabs, Card } from 'antd'
-import * as ICONS from '@ant-design/icons'
-import { VerifyCode } from './VerifyCode';
+import { Card, Tabs } from 'antd'
+import React from 'react'
+
 import { CardItems } from './card'
-import { Items } from './items'
 import { FormilySlider } from './extend/formilySlider'
+import { Items } from './items'
 import { FormilyForm123 } from './TdFormComponents'
+import { VerifyCode } from './VerifyCode'
 
 const normalForm = createForm({
   validateFirst: true,
@@ -31,12 +32,11 @@ const SchemaField = createSchemaField({
     // },
     items() {
       return 3
-    }
+    },
   },
 })
 
 export const FormilyForm = () => {
-
   // return <FormilyForm123></FormilyForm123>
   return (
     <div
@@ -50,12 +50,7 @@ export const FormilyForm = () => {
       <Card style={{ width: 400 }}>
         <Tabs style={{ overflow: 'visible', marginTop: -10 }}>
           <Tabs.TabPane key="1" tab="账密登录">
-            <Form
-              form={normalForm}
-              layout="vertical"
-              size="large"
-              onAutoSubmit={console.log}
-            >
+            <Form form={normalForm} layout="vertical" size="large" onAutoSubmit={console.log}>
               <SchemaField>
                 <SchemaField.String
                   name="username"
@@ -71,7 +66,7 @@ export const FormilyForm = () => {
                   //   prefix: "{{icon('UserOutlined')}}",
                   // }}
                   x-component-props={{
-                    prefix: "{{items()}}"
+                    prefix: '{{items()}}',
                   }}
                 />
                 <SchemaField.String
@@ -89,8 +84,8 @@ export const FormilyForm = () => {
                       state: {
                         value: '{{$deps[0]  ? $deps[0] : ""}}',
                         valid: false,
-                      }
-                    }
+                      },
+                    },
                   }}
                 />
               </SchemaField>
@@ -100,12 +95,7 @@ export const FormilyForm = () => {
             </Form>
           </Tabs.TabPane>
           <Tabs.TabPane key="2" tab="手机登录">
-            <Form
-              form={phoneForm}
-              layout="vertical"
-              size="large"
-              onAutoSubmit={console.log}
-            >
+            <Form form={phoneForm} layout="vertical" size="large" onAutoSubmit={console.log}>
               <SchemaField>
                 <SchemaField.String
                   name="phone"

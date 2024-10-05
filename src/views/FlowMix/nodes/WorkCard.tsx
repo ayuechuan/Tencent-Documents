@@ -1,10 +1,13 @@
-import { Position, Handle, NodeProps } from "@xyflow/react";
+import { Handle, NodeProps, Position } from '@xyflow/react'
 
-export function WorkflowCard({ id, data }: NodeProps & {
+export function WorkflowCard({
+  id,
+  data,
+}: NodeProps & {
   data: {
-    opacity: number;
-    title: string;
-    label: string;
+    opacity: number
+    title: string
+    label: string
   }
 }) {
   return (
@@ -17,5 +20,5 @@ export function WorkflowCard({ id, data }: NodeProps & {
       {data.label && <p>{data.label}</p>}
       <Handle type="source" position={Position.Bottom} />
     </div>
-  );
+  )
 }

@@ -1,28 +1,20 @@
-import { Button, Dialog } from "tdesign-react"
-import { Table, Input, Select, DatePicker, MessagePlugin } from 'tdesign-react';
-import dayjs from 'dayjs';
-import type { PrimaryTableProps, BaseTableProps, TableRowData } from 'tdesign-react';
+import dayjs from 'dayjs'
+import type { BaseTableProps, PrimaryTableProps, TableRowData } from 'tdesign-react'
+import { Button, Dialog } from 'tdesign-react'
+import { DatePicker, Input, MessagePlugin, Select, Table } from 'tdesign-react'
 
 export const EditorPerm = () => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
   const initData: BaseTableProps['data'] = new Array(5).fill(null).map((_, i) => ({
     key: String(i + 1),
     firstName: ['刘德华', '吴彦祖', '王宝强'][i % 3],
-    letters: [
-      ['可编辑'],
-      ['可编辑'],
-      ['所有者'],
-      ['可编辑', '可读'],
-    ][i % 4],
+    letters: [['可编辑'], ['可编辑'], ['所有者'], ['可编辑', '可读']][i % 4],
     createTime: dayjs().format('YYYY-MM-DD'),
-  }));
+  }))
 
+  const [data, setData] = useState([...initData])
 
-  const [data, setData] = useState([...initData]);
-
-
-  const editableCellState: PrimaryTableProps['editableCellState'] = (cellParams) =>
-    cellParams.rowIndex !== 2;
+  const editableCellState: PrimaryTableProps['editableCellState'] = (cellParams) => cellParams.rowIndex !== 2
 
   const columns: BaseTableProps['columns'] = useMemo(
     () => [
@@ -52,13 +44,16 @@ export const EditorPerm = () => {
           }),
           // abortEditOnEvent: ['onChange'],
           onEdited: (context: any) => {
-            data.splice(context.rowIndex, 1, context.newRowData);
-            setData([...data]);
-            console.log('Edit Letters:', context);
+            data.splice(context.rowIndex, 1, context.newRowData)
+            setData([...data])
+            console.log('Edit Letters:', context)
           },
-          rules: [{
-            validator: (val: any) => val.length > 0, message: '至少选择一种'
-          }],
+          rules: [
+            {
+              validator: (val: any) => val.length > 0,
+              message: '至少选择一种',
+            },
+          ],
         },
       },
       {
@@ -73,9 +68,9 @@ export const EditorPerm = () => {
           // 除了点击非自身元素退出编辑态之外，还有哪些事件退出编辑态
           abortEditOnEvent: ['onChange'],
           onEdited: (context: { rowIndex: number; newRowData: TableRowData }) => {
-            data.splice(context.rowIndex, 1, context.newRowData);
-            setData([...data]);
-            console.log('Edit Date:', context);
+            data.splice(context.rowIndex, 1, context.newRowData)
+            setData([...data])
+            console.log('Edit Date:', context)
           },
           // 校验规则，此处同 Form 表单
           rules: () => [
@@ -88,15 +83,13 @@ export const EditorPerm = () => {
       },
     ],
     [data],
-  );
-
+  )
 
   return (
     <div style={{ marginRight: 15 }}>
-      <Button
-        type='button'
-        onClick={() => setVisible(true)}
-        style={{ width: 46, height: 32 }}>分享</Button>
+      <Button type="button" onClick={() => setVisible(true)} style={{ width: 46, height: 32 }}>
+        分享
+      </Button>
       <Dialog
         header="分享协作"
         visible={visible}
@@ -104,13 +97,7 @@ export const EditorPerm = () => {
         onConfirm={() => void setVisible(false)}
         onClose={() => void setVisible(false)}
       >
-        <Table
-          rowKey="key"
-          columns={columns}
-          data={data}
-          editableCellState={editableCellState}
-          bordered={false}
-        />
+        <Table rowKey="key" columns={columns} data={data} editableCellState={editableCellState} bordered={false} />
       </Dialog>
     </div>
   )

@@ -1,7 +1,7 @@
-import React from 'react'
+import { ArrayCards, Form, FormButtonGroup, FormItem, Input, Submit } from '@formily/antd-v5'
 import { createForm } from '@formily/core'
 import { createSchemaField, FormProvider } from '@formily/react'
-import { ArrayCards, Form, FormItem, Input, FormButtonGroup, Submit } from '@formily/antd-v5'
+import React from 'react'
 
 const form = createForm({
   validateFirst: true,
@@ -11,7 +11,7 @@ const SchemaField = createSchemaField({
   components: {
     FormItem,
     Input,
-    ArrayCards
+    ArrayCards,
   },
 })
 
@@ -24,7 +24,7 @@ export function CardItems() {
           x-decorator={'FormItem'}
           x-component={'ArrayCards'}
           x-component-props={{
-            title: '数组类型'
+            title: '数组类型',
           }}
         >
           <SchemaField.Object>
@@ -34,18 +34,15 @@ export function CardItems() {
               x-decorator={'FormItem'}
               x-component={'Input'}
               x-component-props={{
-                placeholder: '测试数据'
+                placeholder: '测试数据',
               }}
               title={'input'}
             />
-            <SchemaField.Void  x-component={'ArrayCards.Remove'}></SchemaField.Void>
-            <SchemaField.Void  x-component={'ArrayCards.MoveUp'}></SchemaField.Void>
-            <SchemaField.Void  x-component={'ArrayCards.MoveDown'}></SchemaField.Void>
+            <SchemaField.Void x-component={'ArrayCards.Remove'}></SchemaField.Void>
+            <SchemaField.Void x-component={'ArrayCards.MoveUp'}></SchemaField.Void>
+            <SchemaField.Void x-component={'ArrayCards.MoveDown'}></SchemaField.Void>
           </SchemaField.Object>
-          <SchemaField.Void
-              x-component={'ArrayCards.Addition'}
-              title={'添加条目'}
-            ></SchemaField.Void>
+          <SchemaField.Void x-component={'ArrayCards.Addition'} title={'添加条目'}></SchemaField.Void>
         </SchemaField.Array>
       </SchemaField>
       <FormButtonGroup>

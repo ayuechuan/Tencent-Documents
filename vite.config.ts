@@ -1,11 +1,11 @@
-import react from '@vitejs/plugin-react-swc';
-import { resolve } from 'path';
-import AutoImport from 'unplugin-auto-import/vite';
-import type { ConfigEnv } from 'vite';
-import { defineConfig, loadEnv } from 'vite';
-import { comlink } from 'vite-plugin-comlink';
-import replace from '@rollup/plugin-replace';
-import { visualizer } from "rollup-plugin-visualizer";
+import replace from '@rollup/plugin-replace'
+import react from '@vitejs/plugin-react-swc'
+import { resolve } from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
+import AutoImport from 'unplugin-auto-import/vite'
+import type { ConfigEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+import { comlink } from 'vite-plugin-comlink'
 import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
@@ -18,11 +18,7 @@ export default ({ command, mode }: ConfigEnv) => {
       react(),
       // comlink(),
       AutoImport({
-        imports: [
-          'react',
-          'react-router-dom',
-          { 'react': ['Fragment'] },
-        ],
+        imports: ['react', 'react-router-dom', { react: ['Fragment'] }],
         dts: './src/auto-imports.d.ts',
         dirs: ['src/store'],
         eslintrc: {
@@ -34,18 +30,16 @@ export default ({ command, mode }: ConfigEnv) => {
         // gzipSize: true,
         brotliSize: true,
         emitFile: false,
-        filename: "test.html", //分析图生成的文件名
-        open: false //如果存在本地服务端口，将在打包后自动展示
+        filename: 'test.html', //分析图生成的文件名
+        open: false, //如果存在本地服务端口，将在打包后自动展示
       }),
-      viteCompression(
-        {
-          algorithm: 'gzip',
-          threshold: 10240,
-          // verbose: true,
-          // deleteOriginFile: true,
-          ext: '.gz',
-        }
-      )
+      viteCompression({
+        algorithm: 'gzip',
+        threshold: 10240,
+        // verbose: true,
+        // deleteOriginFile: true,
+        ext: '.gz',
+      }),
       // replace({
       //   'process.env.NODE_ENV': JSON.stringify('production'),
       //   preventAssignment: true,
@@ -69,14 +63,13 @@ export default ({ command, mode }: ConfigEnv) => {
           find: /^~/,
           replacement: '',
         },
-        { find :'@' , replacement :  resolve(__dirname, './src') },
-        { find :'@components' , replacement :  resolve(__dirname, './src/components') },
-        { find :'@store' , replacement :  resolve(__dirname, './src/store') },
-        { find :'@views' , replacement :  resolve(__dirname, './src/views') },
-        { find :'@assets' , replacement :  resolve(__dirname, './src/assets') },
-        { find :'@hooks' , replacement :  resolve(__dirname, './src/hooks') },
+        { find: '@', replacement: resolve(__dirname, './src') },
+        { find: '@components', replacement: resolve(__dirname, './src/components') },
+        { find: '@store', replacement: resolve(__dirname, './src/store') },
+        { find: '@views', replacement: resolve(__dirname, './src/views') },
+        { find: '@assets', replacement: resolve(__dirname, './src/assets') },
+        { find: '@hooks', replacement: resolve(__dirname, './src/hooks') },
       ],
-
     },
     //服务
     server: {
@@ -101,13 +94,11 @@ export default ({ command, mode }: ConfigEnv) => {
             // '@prefix': currentEnv.VITE_PUBLIC_PREFIX, // 请注意需要与classPrefix保持一致
           },
           javascriptEnabled: true,
-
-        }
+        },
       },
     },
     worker: {
       // plugins: () => [comlink()],
-
     },
     //构建
     build: {
@@ -121,7 +112,7 @@ export default ({ command, mode }: ConfigEnv) => {
       //     //   return 'Td.esm.js'
       //     // }
       //     // if (format === 'umd') {
-      //     //   return 'Td.umd.js' 
+      //     //   return 'Td.umd.js'
       //     // }
       //     // return 'Td.js';
       //     return `index.${format}.js`;
@@ -144,20 +135,19 @@ export default ({ command, mode }: ConfigEnv) => {
           },
           assetFileNames: (assinfo) => {
             if (assinfo.name.includes('css')) {
-              return 'css/[name]-[hash][extname]';
+              return 'css/[name]-[hash][extname]'
             }
             //  图片资源后缀集合
-            const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'avif', 'tiff', 'bmp'];
+            const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'avif', 'tiff', 'bmp']
             //  图片资源
             if (imgExt.includes(assinfo.name.split('.')[1])) {
-              return 'images/[name]-[hash][extname]';
+              return 'images/[name]-[hash][extname]'
             }
-            return 'js/[name]-[hash][extname]';
+            return 'js/[name]-[hash][extname]'
           },
           // chunkFileNames: 'js/[name]-[hash].js',
           // entryFileNames: 'js/[name]-[hash].js',
           // assetFileNames: "[ext]/[name]-[hash].[ext]"
-
         },
       },
       cssCodeSplit: true,

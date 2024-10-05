@@ -1,28 +1,29 @@
+import 'tdesign-react/esm/message/style/index.js'
 
+import { useMount } from 'ahooks'
+import * as comlink from 'comlink'
+// import { useContextMenu } from '@/contexts/contextMenuRight'
+import { FC, PropsWithChildren, Suspense, useState } from 'react'
+import { CheckCircleFilledIcon, CloseCircleFilledIcon, ErrorCircleFilledIcon } from 'tdesign-icons-react'
+import { DialogPlugin, MessagePlugin, Space, Table, Tag } from 'tdesign-react'
+import { Button } from 'tdesign-react'
+import { ConfigContext } from 'tdesign-react/esm/config-provider'
+import { TableProps } from 'tdesign-react/esm/table'
+
+import { useWebWorker } from '@/hooks/useWebWorker'
+import { toggleDark } from '@/utils/theme'
 
 import HomeStyle from './index.module.scss'
-import { useWebWorker } from '@/hooks/useWebWorker'
-// import { useContextMenu } from '@/contexts/contextMenuRight'
-import { FC, PropsWithChildren, Suspense, useState } from 'react';
-import { Table, Tag, MessagePlugin, DialogPlugin, Space } from 'tdesign-react';
-import { ErrorCircleFilledIcon, CheckCircleFilledIcon, CloseCircleFilledIcon } from 'tdesign-icons-react';
-import { TableProps } from 'tdesign-react/esm/table';
-import { ConfigContext } from 'tdesign-react/esm/config-provider';
-import { useMount } from 'ahooks';
-import { Button } from 'tdesign-react';
-import 'tdesign-react/esm/message/style/index.js';
-import * as comlink from 'comlink';
-import { toggleDark } from '@/utils/theme';
 
-const data: TableProps['data'] = [];
-const total = 100;
+const data: TableProps['data'] = []
+const total = 100
 
 function fetchMessage() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve("⚛️")
-    }, 1000,)
-  });
+      resolve('⚛️')
+    }, 1000)
+  })
 }
 
 // type SizeEnum = 'small' | 'medium' | 'large';
@@ -38,39 +39,36 @@ for (let i = 0; i < total; i++) {
     matters: ['宣传物料制作费用', 'algolia 服务报销', '相关周边制作费', '激励奖品快递费'][i % 4],
     time: [2, 3, 1, 4][i % 4],
     createTime: ['2022-01-01', '2022-02-01', '2022-03-01', '2022-04-01', '2022-05-01'][i % 4],
-  });
+  })
 }
 
 const statusNameListMap = {
   0: { label: '审批通过', theme: 'success', icon: <CheckCircleFilledIcon /> },
   1: { label: '审批失败', theme: 'danger', icon: <CloseCircleFilledIcon /> },
   2: { label: '审批过期', theme: 'warning', icon: <ErrorCircleFilledIcon /> },
-} as any;
+} as any
 
-
-
-const publicPath = import.meta.env.VITE_PUBLIC_PATH;
-console.log('10086', publicPath);
+const publicPath = import.meta.env.VITE_PUBLIC_PATH
+console.log('10086', publicPath)
 
 function Home() {
-  const navigate = useNavigate();
-  const workerInstance = useWebWorker();
+  const navigate = useNavigate()
+  const workerInstance = useWebWorker()
   // const contextMenu = useContextMenu();
 
-  const [stripe] = useState(false);
-  const [bordered] = useState(false);
-  const [hover] = useState(false);
-  const [tableLayout] = useState(false);
+  const [stripe] = useState(false)
+  const [bordered] = useState(false)
+  const [hover] = useState(false)
+  const [tableLayout] = useState(false)
   // const [size, setSize] = useState<SizeEnum>('medium');
-  const [showHeader] = useState(true);
+  const [showHeader] = useState(true)
 
-  const config = useContext(ConfigContext);
-
+  const config = useContext(ConfigContext)
 
   const props = {
-    onRowContextMenu: (event: any) => { },
+    onRowContextMenu: (event: any) => {},
     onContextMenu: (event: any) => {},
-    oncontextmenu: (event: any) => {}
+    oncontextmenu: (event: any) => {},
   } as any
 
   const table = (
@@ -114,26 +112,25 @@ function Home() {
         total,
         showJumper: true,
         onChange(pageInfo) {
-          console.log(pageInfo, 'onChange pageInfo');
+          console.log(pageInfo, 'onChange pageInfo')
         },
         onCurrentChange(current, pageInfo) {
-          console.log(current, pageInfo, 'onCurrentChange current');
+          console.log(current, pageInfo, 'onCurrentChange current')
         },
         onPageSizeChange(size, pageInfo) {
-          console.log(size, pageInfo, 'onPageSizeChange size');
+          console.log(size, pageInfo, 'onPageSizeChange size')
         },
       }}
       onPageChange={(pageInfo) => {
-        console.log(pageInfo, 'onPageChange');
+        console.log(pageInfo, 'onPageChange')
       }}
       onRowClick={({ row, index, e }) => {
-        console.log('onRowClick', { row, index, e });
+        console.log('onRowClick', { row, index, e })
       }}
       {...props}
     />
-  );
-  const [count, setCount] = useState(0);
-
+  )
+  const [count, setCount] = useState(0)
 
   useMount(() => {
     // const button = document.getElementById('startCalculation');
@@ -147,15 +144,18 @@ function Home() {
     // })
   })
 
-
   // return <PostsTab></PostsTab>
   return (
-    <div className={HomeStyle.home} >
+    <div className={HomeStyle.home}>
       {count}
-      <Button type='button'
+      <Button
+        type="button"
         onClick={() => {
           setCount(count + 1)
-        }}>确定1</Button>
+        }}
+      >
+        确定1
+      </Button>
       <div
       // onContextMenu={() => {
       //   contextMenu.handleItems([{
@@ -175,8 +175,6 @@ function Home() {
       //   ])
       // }}
       >
-
-
         {/* <Space direction="vertical">
           <RadioGroup
             // value={size}
@@ -210,52 +208,71 @@ function Home() {
       </div>
 
       {table}
-      <Button type='button'
+      <Button
+        type="button"
         onClick={() => {
-          console.log('===');
+          console.log('===')
           // navigate('/flow')
           navigate({ pathname: '/flow', search: '?sort=name&id=2' })
           // MessagePlugin.info('你确定选择吗?');
           DialogPlugin({
             header: 'Dialog-Plugin',
             body: 'Hi, darling! Do you want to be my lover?',
-          });
-        }}>确定</Button>
-      <button onClick={() => {
-        //  暗黑主题
-        document.documentElement.setAttribute('theme-mode', 'dark')
-        // (window as any).bootstrap.unMount();
-        // setTimeout(() => {
-        //   (window as any).bootstrap.mount();
-        // })
-      }}>卸载</button>
+          })
+        }}
+      >
+        确定
+      </Button>
+      <button
+        onClick={() => {
+          //  暗黑主题
+          document.documentElement.setAttribute('theme-mode', 'dark')
+          // (window as any).bootstrap.unMount();
+          // setTimeout(() => {
+          //   (window as any).bootstrap.mount();
+          // })
+        }}
+      >
+        卸载
+      </button>
 
-      <button onClick={async () => {
-        const subscription = workerInstance.open();
-        setTimeout(() => {
-          subscription.unsubscribe();
-        })
-        const res = await workerInstance.worker!.blockingFunc(400, comlink.proxy((nums: number) => {
-          console.log('结果', nums);
-        }));
-        const resa = await workerInstance.worker!.blockingFunc(400)
-      }}> 开启 worker</button>
+      <button
+        onClick={async () => {
+          const subscription = workerInstance.open()
+          setTimeout(() => {
+            subscription.unsubscribe()
+          })
+          const res = await workerInstance.worker!.blockingFunc(
+            400,
+            comlink.proxy((nums: number) => {
+              console.log('结果', nums)
+            }),
+          )
+          const resa = await workerInstance.worker!.blockingFunc(400)
+        }}
+      >
+        {' '}
+        开启 worker
+      </button>
 
-      <Button onClick={() => {
-        let result = 0;
-        for (let i = 0; i < 400; i++) {
-          for (let j = 0; j < 1_000_000; j++) {
-            result += Math.random();
+      <Button
+        onClick={() => {
+          let result = 0
+          for (let i = 0; i < 400; i++) {
+            for (let j = 0; j < 1_000_000; j++) {
+              result += Math.random()
+            }
           }
-        }
-        console.log('result', result);
-
-      }}>耗时任务</Button>
+          console.log('result', result)
+        }}
+      >
+        耗时任务
+      </Button>
 
       <Space>
-        <Button type='button'>cut</Button>
-        <Button type='button'>copy</Button>
-        <Button type='button'>paste</Button>
+        <Button type="button">cut</Button>
+        <Button type="button">copy</Button>
+        <Button type="button">paste</Button>
       </Space>
       <br />
       <br />
@@ -269,10 +286,8 @@ export function delay(ms: number) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(200)
-    }, ms);
-  });
+    }, ms)
+  })
 }
 
-
-export default Home;
-
+export default Home

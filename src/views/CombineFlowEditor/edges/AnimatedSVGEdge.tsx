@@ -1,17 +1,15 @@
-
-import { SmoothStepEdge, EdgeProps, getBezierPath, getSmoothStepPath, BaseEdge } from '@xyflow/react';
+import { BaseEdge, EdgeProps, getBezierPath, getSmoothStepPath, SmoothStepEdge } from '@xyflow/react'
 
 export function AnimatedSVGEdge(props: EdgeProps) {
-  const [edgePath] = getSmoothStepPath(props);
-  const [edgePaths] = getBezierPath(props);
+  const [edgePath] = getSmoothStepPath(props)
+  const [edgePaths] = getBezierPath(props)
 
-  console.log('props',props);
-  
+  console.log('props', props)
 
   return (
     <>
       {!props.selected && <SmoothStepEdge {...props} />}
-      {props.selected && <BaseEdge {...props} path={edgePaths}/>}
+      {props.selected && <BaseEdge {...props} path={edgePaths} />}
       <circle r="5" fill="#ff0073">
         <animateMotion dur="4s" repeatCount="indefinite" path={edgePath} />
       </circle>
@@ -35,7 +33,7 @@ export function AnimatedSVGEdge(props: EdgeProps) {
         <animateMotion dur="4s" repeatCount="indefinite" path={edgePath} />
       </polygon> */}
     </>
-  );
+  )
 }
 // // 固定三角形的三个顶点
 // const points = "50,15 90,85 10,85";
@@ -45,10 +43,11 @@ export function AnimatedSVGEdge(props: EdgeProps) {
 //     <polygon points={points} fill="blue" />
 //   </svg>
 
-
-{/* <polygon
+{
+  /* <polygon
         points={`5,1 ${0},${-2} ${0},${3}`}
         fill="blue"
       >
         <animateMotion dur="4s" repeatCount="indefinite" path={edgePath} />
-      </polygon> */}
+      </polygon> */
+}

@@ -1,10 +1,10 @@
 export class GlobalOperate {
-  constructor() { }
+  constructor() {}
 
   public start() {
-    const sideEffect = this.onCopy();
+    const sideEffect = this.onCopy()
     return () => {
-      sideEffect();
+      sideEffect()
     }
   }
 
@@ -17,23 +17,22 @@ export class GlobalOperate {
           console.log('拿到剪切板的内容', res)
         })
       }
-    };
-    document.addEventListener('visibilitychange', handle);
+    }
+    document.addEventListener('visibilitychange', handle)
     return () => {
-      document.removeEventListener('visibilitychange', handle);
+      document.removeEventListener('visibilitychange', handle)
     }
   }
 }
 
-
 export class WithResolvers<T> {
-  public promise!: Promise<T>;
+  public promise!: Promise<T>
   public resolve!: (value: T | PromiseLike<T>) => void
   public reject!: (reason?: any) => void
   constructor() {
     this.promise = new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
+      this.resolve = resolve
+      this.reject = reject
     })
   }
 }

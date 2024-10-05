@@ -1,67 +1,71 @@
-import { ClearIcon, CursorIcon, GestureRanslationIcon, MoonIcon, RollbackIcon, RollfrontIcon } from "tdesign-icons-react";
-import { Space, Tooltip } from "tdesign-react";
-import { useFlowStore } from "../../FlowProvider";
-import { observer } from "mobx-react-lite";
-import { useRedoWithUndo } from "../../hooks/useRedoWithUndo";
-import { useClearFlow } from "../../hooks/useClearFlow";
+import { observer } from 'mobx-react-lite'
+import {
+  ClearIcon,
+  CursorIcon,
+  GestureRanslationIcon,
+  MoonIcon,
+  RollbackIcon,
+  RollfrontIcon,
+} from 'tdesign-icons-react'
+import { Space, Tooltip } from 'tdesign-react'
+
+import { useFlowStore } from '../../FlowProvider'
+import { useClearFlow } from '../../hooks/useClearFlow'
+import { useRedoWithUndo } from '../../hooks/useRedoWithUndo'
 
 export const ModeBar = observer(() => {
-  const store = useFlowStore();
-  const { redo, undo } = useRedoWithUndo();
-  const clear = useClearFlow();
+  const store = useFlowStore()
+  const { redo, undo } = useRedoWithUndo()
+  const clear = useClearFlow()
   return (
-    <div className='flow_panel'>
-      <div className='controller'>
+    <div className="flow_panel">
+      <div className="controller">
         <Space size={14}>
-          <Tooltip
-            content="撤销"
-            destroyOnClose
-            showArrow
-            theme="default"
-          >
+          <Tooltip content="撤销" destroyOnClose showArrow theme="default">
             <RollbackIcon
               style={{ opacity: store.history.canBeUndo ? 1 : 0.2 }}
               onClick={() => {
                 if (!store.history.canBeUndo) {
-                  return;
+                  return
                 }
-                undo();
+                undo()
               }}
             />
           </Tooltip>
-          <Tooltip
-            content="重做"
-            destroyOnClose
-            showArrow
-            theme="default"
-          >
+          <Tooltip content="重做" destroyOnClose showArrow theme="default">
             <RollfrontIcon
               style={{ opacity: store.history.canBeRedo ? 1 : 0.2 }}
               onClick={() => {
                 if (!store.history.canBeRedo) {
-                  return;
+                  return
                 }
-                redo();
+                redo()
               }}
             />
           </Tooltip>
           <div style={{ width: '100%', height: '100%' }}>
-            <CursorIcon onClick={() => {
-              store.mode.type = 'selection';
-            }} />
+            <CursorIcon
+              onClick={() => {
+                store.mode.type = 'selection'
+              }}
+            />
           </div>
-          <GestureRanslationIcon onClick={() => {
-            store.mode = {
-              ...store.mode,
-              type: 'move'
-            };
-          }} />
+          <GestureRanslationIcon
+            onClick={() => {
+              store.mode = {
+                ...store.mode,
+                type: 'move',
+              }
+            }}
+          />
           <ClearIcon onClick={clear} />
-          <MoonIcon onClick={() => {
-            store.mode.colorMode = store.mode.colorMode === 'light' ? 'dark' : 'light';
-          }} />
+          <MoonIcon
+            onClick={() => {
+              store.mode.colorMode = store.mode.colorMode === 'light' ? 'dark' : 'light'
+            }}
+          />
         </Space>
       </div>
     </div>
   )
-});
+})

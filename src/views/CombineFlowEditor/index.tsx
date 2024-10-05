@@ -1,51 +1,52 @@
-import { LegacyRef, useCallback } from 'react';
+import '@xyflow/react/dist/style.css'
+import './index.less'
+
 import {
-  ReactFlow,
   addEdge,
   Background,
-  useNodesState,
-  useEdgesState,
-  Node,
-  MiniMap,
-  Controls,
-  Connection,
-  Edge,
-  NodeTypes,
-  EdgeTypes,
-  ReactFlowProvider,
   BackgroundVariant,
-  useConnection,
+  Connection,
   ConnectionLineType,
   ConnectionMode,
+  Controls,
+  Edge,
+  EdgeTypes,
   MarkerType,
+  MiniMap,
+  Node,
+  NodeTypes,
+  ReactFlow,
+  ReactFlowProvider,
+  SelectionMode,
+  useConnection,
   useEdges,
+  useEdgesState,
   useHandleConnections,
   useKeyPress,
+  useNodesState,
   useOnViewportChange,
+  useReactFlow,
   useViewport,
   ViewportPortal,
-  SelectionMode,
-  useReactFlow,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { AnimatedSVGEdge } from './edges/AnimatedSVGEdge';
-import { BezierEdgeComponent } from './edges/bezierEdge';
+} from '@xyflow/react'
+import { useMount } from 'ahooks'
+import { LegacyRef, useCallback } from 'react'
+import { Button } from 'tdesign-react'
+
+import { AnimatedSVGEdge } from './edges/AnimatedSVGEdge'
+import { BezierEdgeComponent } from './edges/bezierEdge'
+import { MakerEdge } from './edges/EgdeMaker'
 import {
-  PaymentInit,
-  PaymentCountry,
-  ResizerNode,
-  TextNode,
   FormNode,
   NodeWithToolbar,
-  ProcessEndedNode
-} from './Nodes';
-import AnnotationNode from './Nodes/AnnotationNode';
-import { MakerEdge } from './edges/EgdeMaker';
-import { Button } from 'tdesign-react';
-import Pingmiantu from './Nodes/Pingmiantu';
-import './index.less';
-import { useMount } from 'ahooks';
-
+  PaymentCountry,
+  PaymentInit,
+  ProcessEndedNode,
+  ResizerNode,
+  TextNode,
+} from './Nodes'
+import AnnotationNode from './Nodes/AnnotationNode'
+import Pingmiantu from './Nodes/Pingmiantu'
 
 const nodeTypes = {
   PaymentInit,
@@ -56,14 +57,14 @@ const nodeTypes = {
   form: FormNode,
   'node-with-toolbar': NodeWithToolbar,
   ProcessEndedNode,
-  pingmiantu: Pingmiantu
-} as unknown as NodeTypes;
+  pingmiantu: Pingmiantu,
+} as unknown as NodeTypes
 
 const edgeTypes = {
   BezierEdgeComponent,
   animatedSvg: AnimatedSVGEdge,
-  logo: MakerEdge
-} as EdgeTypes;
+  logo: MakerEdge,
+} as EdgeTypes
 
 const initialEdges: Edge[] = [
   {
@@ -95,26 +96,27 @@ const initialEdges: Edge[] = [
     animated: true,
     style: { stroke: 'rgb(158, 118, 255)', strokeWidth: 3 },
   },
-
-];
-
-
+]
 
 const initialNodes: Node[] = [
   {
-    id: '1', position: { x: 520, y: 100 }, data: {
+    id: '1',
+    position: { x: 520, y: 100 },
+    data: {
       amount: 200,
-      className: ''
+      className: '',
     },
     type: 'PaymentInit',
-    className: 'flow_error'
+    className: 'flow_error',
   },
   {
-    id: '2', position: { x: 300, y: 20 }, data: { curreny: '$' },
+    id: '2',
+    position: { x: 300, y: 20 },
+    data: { curreny: '$' },
     style: {
-      background: 'green'
+      background: 'green',
     },
-    type: 'PaymentCountry'
+    type: 'PaymentCountry',
   },
   {
     id: 'annotation-1',
@@ -123,8 +125,7 @@ const initialNodes: Node[] = [
     selectable: false,
     data: {
       level: 1,
-      label:
-        'Built-in node and edge types. Draggable, deletable and connectable!',
+      label: 'Built-in node and edge types. Draggable, deletable and connectable!',
       arrowStyle: {
         right: 0,
         bottom: 0,
@@ -146,7 +147,8 @@ const initialNodes: Node[] = [
       background: 'rgb(208, 192, 247)',
       color: 'white',
     },
-  }, {
+  },
+  {
     id: '3-2',
     type: 'textinput',
     position: { x: 0, y: 250 },
@@ -157,7 +159,8 @@ const initialNodes: Node[] = [
     //   width: 200,
     //   minHeight: 100,
     // }
-  }, {
+  },
+  {
     id: '3-5',
     type: 'form',
     position: { x: 300, y: 250 },
@@ -168,8 +171,8 @@ const initialNodes: Node[] = [
       background: '#da5eaa',
       color: 'white',
       borderRadius: 3,
-      padding: '0 10px 20px 10px'
-    }
+      padding: '0 10px 20px 10px',
+    },
   },
   // {
   //   id: '1000',
@@ -181,41 +184,41 @@ const initialNodes: Node[] = [
     id: '1000',
     position: { x: 0, y: 100 },
     type: 'ProcessEndedNode',
-    data: { label: 'END' }
-  }
+    data: { label: 'END' },
+  },
 ]
 
-
-
-
 export const NestedFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   // useStoreApi();
   // useReactFlow();
 
-  const onConnect = useCallback((connection: Connection) => {
-    console.log('connection', connection);
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      console.log('connection', connection)
 
-    const egee = {
-      ...connection,
-      animated: true,
-      id: `${edges.length + 1} + 1`,
-      type: 'BezierEdgeComponent',
-      style: {
-        stroke: 'red' || connection.targetHandle || 'rgb(158, 118, 255)',
-        strokeWidth: 2
-      },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        width: 15,
-        height: 15,
-        color: 'red' || 'rgb(158, 118, 255)',
-      },
-    } as Connection | Edge;
-    setEdges((prevEdges) => addEdge(egee, prevEdges));
-  }, [edges]);
+      const egee = {
+        ...connection,
+        animated: true,
+        id: `${edges.length + 1} + 1`,
+        type: 'BezierEdgeComponent',
+        style: {
+          stroke: 'red' || connection.targetHandle || 'rgb(158, 118, 255)',
+          strokeWidth: 2,
+        },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 15,
+          height: 15,
+          color: 'red' || 'rgb(158, 118, 255)',
+        },
+      } as Connection | Edge
+      setEdges((prevEdges) => addEdge(egee, prevEdges))
+    },
+    [edges],
+  )
 
   // useMount(()=>{
   //   setNodes((nds) =>{
@@ -229,7 +232,7 @@ export const NestedFlow = () => {
   //            }
   //          };
   //        }
- 
+
   //        return n;
   //      })
   //    })
@@ -239,32 +242,31 @@ export const NestedFlow = () => {
     <div style={{ width: '100%', height: '100vh' }}>
       <ReactFlowProvider>
         <Buts></Buts>
+        <Button type="button" onClick={() => {}}>
+          导出
+        </Button>
         <Button
-          type='button'
-          onClick={() => {
-            
-
-          }}>导出</Button>
-        <Button
-          type='button'
+          type="button"
           onClick={() => {
             //  计时
-            const end = performance.now();
+            const end = performance.now()
             import('html2canvas').then((instace) => {
-  //  计时结束
-              const now = performance.now();
+              //  计时结束
+              const now = performance.now()
               // console.log('time----------', now - old);
-              console.log(`Execution time-------: ${(now - end)} milliseconds`);
+              console.log(`Execution time-------: ${now - end} milliseconds`)
               instace.default(document.body).then((canvas) => {
                 // const image = canvas.toDataURL('image/png')
                 // const link = document.createElement('a')
                 // link.href = image
                 // link.download = 'image.png'
                 // link.click()
-
               })
             })
-          }}>截图</Button>
+          }}
+        >
+          截图
+        </Button>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -277,55 +279,41 @@ export const NestedFlow = () => {
           // connectionLineComponent={ConnectionLineComponent}
           connectionLineType={ConnectionLineType.SmoothStep}
           connectionMode={ConnectionMode.Strict}
-
           // connectionLineContainerStyle={{background : 'red'}}
           connectOnClick={true}
           connectionLineStyle={{
-            stroke: "#F6AD55",
-            strokeWidth: 3
+            stroke: '#F6AD55',
+            strokeWidth: 3,
           }}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           proOptions={{
-            hideAttribution: true
+            hideAttribution: true,
           }}
           snapToGrid={true}
           onPaneClick={() => {
-            console.log('eventtttt');
-
+            console.log('eventtttt')
           }}
           onMouseDownCapture={() => {
-            console.log('eventtttt15151');
+            console.log('eventtttt15151')
           }}
-
           onPaneScroll={() => {
-            console.log(15151);
-
+            console.log(15151)
           }}
           panOnScroll
           selectionOnDrag
-          panOnDrag={[1,2]}
+          panOnDrag={[1, 2]}
           selectionMode={SelectionMode.Partial}
         >
           <Controls />
-          <MiniMap
-            zoomable
-            pannable
-            nodeStrokeWidth={3}
-            nodeClassName={(node) => node.type!}
-          />
-          <Background
-            variant={BackgroundVariant.Dots}
-            gap={[12, 12]}
-            bgColor='#FFF' />
+          <MiniMap zoomable pannable nodeStrokeWidth={3} nodeClassName={(node) => node.type!} />
+          <Background variant={BackgroundVariant.Dots} gap={[12, 12]} bgColor="#FFF" />
           {/* <Maker /> */}
         </ReactFlow>
       </ReactFlowProvider>
     </div>
-  );
-};
-
-
+  )
+}
 
 export function Maker() {
   // const connection = useConnection();
@@ -341,33 +329,28 @@ export function Maker() {
 
   // const { x, y ,zoom } = useViewport();
 
-
   return (
     <ViewportPortal>
-      <div
-        style={{ transform: 'translate(-100px, 10px)', position: 'absolute' }}
-      >
+      <div style={{ transform: 'translate(-100px, 10px)', position: 'absolute' }}>
         This div is positioned at [100, 100] on the flow.
       </div>
     </ViewportPortal>
   )
 }
 
-
 export const ConnectionLineComponent = ({ fromX, fromY, toX, toY }: any) => {
-  const { fromHandle } = useConnection();
-
+  const { fromHandle } = useConnection()
 
   // 计算中点
-  const midX = (fromX + toX) / 2;
-  const midY = (fromY + toY) / 2;
+  const midX = (fromX + toX) / 2
+  const midY = (fromY + toY) / 2
 
   // 三角形的第三个顶点偏离中点
-  const offset = 30; // 偏移量，用于调整三角形的高度
-  const thirdX = midX;
-  const thirdY = midY - offset;
+  const offset = 30 // 偏移量，用于调整三角形的高度
+  const thirdX = midX
+  const thirdY = midY - offset
 
-  const points = `${fromX},${fromY} ${toX},${toY} ${thirdX},${thirdY}`;
+  const points = `${fromX},${fromY} ${toX},${toY} ${thirdX},${thirdY}`
   return (
     <g>
       <path
@@ -378,29 +361,23 @@ export const ConnectionLineComponent = ({ fromX, fromY, toX, toY }: any) => {
         d={`M${fromX},${fromY} C ${fromX} ${toY} ${toX},${toY} ${toX},${toY}`}
         strokeDasharray="10 10"
       />
-      <circle
-        cx={toX}
-        cy={toY}
-        fill="#fff"
-        r={10}
-        stroke={fromHandle!.id || ''}
-        strokeWidth={1.5}
-      />
+      <circle cx={toX} cy={toY} fill="#fff" r={10} stroke={fromHandle!.id || ''} strokeWidth={1.5} />
     </g>
-  );
-};
+  )
+}
 
-
-
-function Buts(){
-  const flow = useReactFlow();
-    return (
-      <div>
-        <Button onClick={()=>{
+function Buts() {
+  const flow = useReactFlow()
+  return (
+    <div>
+      <Button
+        onClick={() => {
           const object = flow.toObject()
-          console.log('object',object);
-          
-        }}>按钮</Button>
-      </div>
-    )
+          console.log('object', object)
+        }}
+      >
+        按钮
+      </Button>
+    </div>
+  )
 }

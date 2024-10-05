@@ -1,27 +1,28 @@
-import * as g6 from '@antv/g6';
-import { CustomNode } from './node';
-import { Backgrounds } from '../plugins/background';
-import { ExtendRect } from './test';
-import { Group, DisplayObject } from '@antv/g';
-// Use your own iconfont.
-const iconFont = document.createElement('script');
-iconFont.src = '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js';
-document.head.appendChild(iconFont);
+import { DisplayObject, Group } from '@antv/g'
+import * as g6 from '@antv/g6'
 
-g6.register(g6.ExtensionCategory.NODE, 'custom-Node', CustomNode);
-g6.register(g6.ExtensionCategory.PLUGIN, 'back', Backgrounds);
+import { Backgrounds } from '../plugins/background'
+import { CustomNode } from './node'
+import { ExtendRect } from './test'
+// Use your own iconfont.
+const iconFont = document.createElement('script')
+iconFont.src = '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
+document.head.appendChild(iconFont)
+
+g6.register(g6.ExtensionCategory.NODE, 'custom-Node', CustomNode)
+g6.register(g6.ExtensionCategory.PLUGIN, 'back', Backgrounds)
 g6.register(g6.ExtensionCategory.NODE, 'ExtendRect', ExtendRect)
 
 export class CustomGraph {
-  private graph!: g6.Graph;
+  private graph!: g6.Graph
   constructor(instance: HTMLElement) {
-    const startTime = new Date('2023-08-01').getTime();
-    const diff = 3600 * 24 * 1000;
+    const startTime = new Date('2023-08-01').getTime()
+    const diff = 3600 * 24 * 1000
     const timebarData = [10, 2, 3, 4, 15, 10, 5, 0, 3, 1].map((value, index) => ({
       time: new Date(startTime + index * diff),
       value,
       label: new Date(startTime + index * diff).toLocaleString(),
-    }));
+    }))
     this.graph = new g6.Graph({
       container: instance as HTMLElement,
       width: 1200,
@@ -41,14 +42,15 @@ export class CustomGraph {
           type: 'back',
           width: '800px',
           height: '600px',
-          backgroundImage: 'url(https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*0Qq0ToQm1rEAAAAAAAAAAAAADmJ7AQ/original)',
+          backgroundImage:
+            'url(https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*0Qq0ToQm1rEAAAAAAAAAAAAADmJ7AQ/original)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           opacity: 0,
         },
         {
-          type: 'fullscreen'
-        }
+          type: 'fullscreen',
+        },
         // {
         //   type: 'toolbar',
         //   position: 'right-center',
@@ -100,30 +102,28 @@ export class CustomGraph {
         // },
       ],
       // padding:[50,50,50,50]
-
-    });
-    this.bind();
+    })
+    this.bind()
   }
 
   bind() {
     this.graph.on('node:click', (event: g6.IEvent) => {
-      console.error("==", event);
-
+      console.error('==', event)
     })
   }
 
   ready() {
-    this.graph.setData(data);
-    this.graph.render();
+    this.graph.setData(data)
+    this.graph.render()
   }
 
   fullscreen() {
-    const fullscreen = this.graph.getPluginInstance('fullscreen') as g6.Fullscreen;
-    fullscreen.request();
+    const fullscreen = this.graph.getPluginInstance('fullscreen') as g6.Fullscreen
+    fullscreen.request()
   }
 
   destory() {
-    this.graph.destroy();
+    this.graph.destroy()
   }
 }
 
@@ -139,8 +139,8 @@ const data: g6.GraphData = {
       style: {
         size: [100, 100],
         // fontSize: 12,
-      }
-      // data: { 
+      },
+      // data: {
       //   label: 'node-0', description: 'This is node-0.'
       //  }
     },
@@ -150,8 +150,8 @@ const data: g6.GraphData = {
       y: 0, // Number，可选，节点位置的 y 值
       r: 50,
       style: {
-        r: 50
-      }
+        r: 50,
+      },
     },
   ],
   // 边集
@@ -162,4 +162,4 @@ const data: g6.GraphData = {
     },
     // { source: '0', target: '1', data: { description: 'This is edge from node 0 to node 1.' } },
   ],
-};
+}

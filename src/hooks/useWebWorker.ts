@@ -1,10 +1,11 @@
-import { WebWorkerContext } from "@/contexts/webWorker";
-import React from "react";
+import React from 'react'
+
+import { WebWorkerContext } from '@/contexts/webWorker'
 
 export const useWebWorker = () => {
-  const webWorker = React.useContext(WebWorkerContext);
+  const webWorker = React.useContext(WebWorkerContext)
   if (!webWorker) {
-    throw new Error('useWebWorker must be used within a WebWorkerProvider');
+    throw new Error('useWebWorker must be used within a WebWorkerProvider')
   }
-  return webWorker;
+  return webWorker
 }

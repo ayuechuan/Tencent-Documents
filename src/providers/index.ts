@@ -1,1 +1,1 @@
-export * from './webWorker';
+export * from './webWorker'

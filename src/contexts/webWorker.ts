@@ -1,13 +1,14 @@
-import React from "react";
-import * as Comlink from 'comlink';
-import { Iremote } from "@/worker/worker";
+import * as Comlink from 'comlink'
+import React from 'react'
 
-export interface Unsubscribable{
+import { Iremote } from '@/worker/worker'
+
+export interface Unsubscribable {
   unsubscribe(): void
 }
 
 export const WebWorkerContext = React.createContext<{
-  worker: Comlink.Remote<Iremote> | null;
-  open(): Unsubscribable;
-  close(): void;
-} | null>(null);
+  worker: Comlink.Remote<Iremote> | null
+  open(): Unsubscribable
+  close(): void
+} | null>(null)

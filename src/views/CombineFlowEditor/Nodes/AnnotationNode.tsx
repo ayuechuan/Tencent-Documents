@@ -1,6 +1,6 @@
-import { memo } from 'react';
+import { memo } from 'react'
 
-function AnnotationNode({ data }:any) {
+function AnnotationNode({ data }: any) {
   return (
     <>
       <div style={{ padding: 10, display: 'flex' }}>
@@ -13,7 +13,7 @@ function AnnotationNode({ data }:any) {
         </div>
       )}
     </>
-  );
+  )
 }
 
-export default memo(AnnotationNode);
+export default memo(AnnotationNode)

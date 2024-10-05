@@ -1,18 +1,18 @@
-import { IMenuItem, MenuItem } from "@/components/menuItem/menuItem";
-import { autorun } from "mobx";
-import { useLocalObservable, useObserver } from "mobx-react-lite";
-import Dropdown from "rc-dropdown";
-import { createContext } from "react";
+import { autorun } from 'mobx'
+import { useLocalObservable, useObserver } from 'mobx-react-lite'
+import Dropdown from 'rc-dropdown'
+import { createContext } from 'react'
 
-const ContextMenu = createContext(null as any);
+import { IMenuItem, MenuItem } from '@/components/menuItem/menuItem'
 
+const ContextMenu = createContext(null as any)
 
 interface IContextMenu {
-  visible: boolean;
-  items: IMenuItem[];
-  selectedKeys: never[];
-  readonly isOpen: boolean | 0;
-  handleItems(items: IMenuItem[]): void;
+  visible: boolean
+  items: IMenuItem[]
+  selectedKeys: never[]
+  readonly isOpen: boolean | 0
+  handleItems(items: IMenuItem[]): void
 }
 
 export const ContextMenuProvider = (props: any) => {
@@ -22,39 +22,39 @@ export const ContextMenuProvider = (props: any) => {
       items: [] as IMenuItem[],
       selectedKeys: [],
       handleItems(items: IMenuItem[]) {
-        this.items = items;
-      }
-    };
-  });
+        this.items = items
+      },
+    }
+  })
 
-  const store = useLocalObservable<{ items: IMenuItem[] }>(() => ({ items: [] }));
+  const store = useLocalObservable<{ items: IMenuItem[] }>(() => ({ items: [] }))
 
   useEffect(
     () =>
       autorun(async () => {
-        store.items = (await Promise.all(contextMenu.items)).flat();
+        store.items = (await Promise.all(contextMenu.items)).flat()
       }),
-    []
-  );
+    [],
+  )
 
   const onVisibleChange = useCallback((visible: boolean) => {
     if (visible && contextMenu.items.length) {
-      contextMenu.visible = visible;
+      contextMenu.visible = visible
     } else {
-      (contextMenu.visible = false);
-      (contextMenu.items = []);
+      contextMenu.visible = false
+      contextMenu.items = []
       // contextMenu.visible && (contextMenu.visible = false);
       // contextMenu.items.length && (contextMenu.items = []);
     }
-  }, []);
+  }, [])
 
   const onMenuClick = useCallback((params: any) => {
-    const { closeAfterClick = true } = params;
+    const { closeAfterClick = true } = params
     if (closeAfterClick) {
-      contextMenu.visible = false;
-      contextMenu.items = [];
+      contextMenu.visible = false
+      contextMenu.items = []
     }
-  }, []);
+  }, [])
 
   return useObserver(() => (
     <ContextMenu.Provider value={contextMenu}>
@@ -64,18 +64,13 @@ export const ContextMenuProvider = (props: any) => {
         onVisibleChange={onVisibleChange}
         overlayStyle={{
           border: 'none',
-          boxShadow: 'none'
+          boxShadow: 'none',
         }}
         placement="bottomRight"
-        overlay={
-          <MenuItem
-            items={store.items}
-            style={{ minWidth: 160 }}
-            onClick={onMenuClick}
-          ></MenuItem>
-        }
+        overlay={<MenuItem items={store.items} style={{ minWidth: 160 }} onClick={onMenuClick}></MenuItem>}
         animation="slide-up"
-        alignPoint>
+        alignPoint
+      >
         <div
           role="button"
           style={{
@@ -90,5 +85,5 @@ export const ContextMenuProvider = (props: any) => {
 }
 
 export function useContextMenu() {
-  return useContext(ContextMenu) as IContextMenu;
+  return useContext(ContextMenu) as IContextMenu
 }

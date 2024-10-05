@@ -1,5 +1,5 @@
-import { EdgeProps } from "@xyflow/react";
-import { EdgeLabelRenderer, getSmoothStepPath } from "@xyflow/react";
+import { EdgeProps } from '@xyflow/react'
+import { EdgeLabelRenderer, getSmoothStepPath } from '@xyflow/react'
 
 export default function WorkflowLabelledEdge({
   id,
@@ -20,7 +20,7 @@ export default function WorkflowLabelledEdge({
     targetX,
     targetY,
     targetPosition,
-  });
+  })
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function WorkflowLabelledEdge({
         <div
           className="label_tag"
           style={{
-            position : 'absolute',
+            position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
           }}
         >
@@ -37,5 +37,5 @@ export default function WorkflowLabelledEdge({
         </div>
       </EdgeLabelRenderer>
     </>
-  );
+  )
 }

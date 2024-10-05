@@ -1,59 +1,62 @@
-import Routes from '@/router'
-import { Suspense } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { useVcosole } from '@hooks/useVconsole';
-import { WebWorkerProvider } from './providers';
-import { ConfigProvider } from 'tdesign-react/esm/config-provider';
-import nprogress from 'nprogress';
 import './App.css'
-import { ContextMenuProvider } from './contexts/contextMenuRight';
-import { GlobalConfigProvider } from 'tdesign-react/esm/config-provider/type';
-import 'tdesign-react/esm/index';
+import 'tdesign-react/esm/index'
+
+import { useVcosole } from '@hooks/useVconsole'
+import nprogress from 'nprogress'
+import { Suspense } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { ConfigProvider } from 'tdesign-react/esm/config-provider'
+import { GlobalConfigProvider } from 'tdesign-react/esm/config-provider/type'
+
+import Routes from '@/router'
+
+import { ContextMenuProvider } from './contexts/contextMenuRight'
+import { WebWorkerProvider } from './providers'
 
 function useVconolseController() {
-  const [vc] = useVcosole();
+  const [vc] = useVcosole()
   useEffect(() => {
     console.log('VConsole ?', vc)
     if (vc) {
       vc.show()
     }
-  }, []);
+  }, [])
 }
 
 const App = ({ locales }: { locales: GlobalConfigProvider }) => {
-  useVconolseController();
+  useVconolseController()
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL as string}>
       <Suspense fallback={<SuspenseFallback />}>
         <ConfigProvider
           globalConfig={{
             classPrefix: import.meta.env.VITE_PUBLIC_PREFIX,
-            ...locales
-          }}>
+            ...locales,
+          }}
+        >
           <WebWorkerProvider>
             {/* <ContextMenuProvider> */}
-              <Routes />
+            <Routes />
             {/* </ContextMenuProvider> */}
           </WebWorkerProvider>
         </ConfigProvider>
       </Suspense>
     </BrowserRouter>
   )
-};
+}
 
 function SuspenseFallback() {
   useEffect(() => {
-    nprogress.configure({ showSpinner: false });
+    nprogress.configure({ showSpinner: false })
     nprogress.start()
 
     return () => void nprogress.done()
-  }, []);
+  }, [])
 
-  return null;
+  return null
 }
 
-export default App;
-
+export default App
 
 // export class ImageCache {
 //   db: IDBDatabase | null = null;
@@ -153,7 +156,6 @@ export default App;
 //   }
 // }
 
-
 // const BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 // const cache = new ImageCache({ version: 1 });
 // await cache.init();
@@ -164,5 +166,3 @@ export default App;
 // // it will return string by URL.createObjectURL()
 // // get blob easily by: let blob = await fetch(url).then(r => r.blob());
 // const image = await cache.getImage('trophy')
-
-

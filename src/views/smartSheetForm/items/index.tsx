@@ -1,18 +1,18 @@
-import React from 'react'
 import {
+  ArrayItems,
+  DatePicker,
+  Editable,
+  FormButtonGroup,
   FormItem,
   Input,
-  Editable,
   Select,
-  DatePicker,
-  ArrayItems,
-  FormButtonGroup,
-  Submit,
   Space,
+  Submit,
 } from '@formily/antd-v5'
 import { createForm, GeneralField } from '@formily/core'
-import { FormProvider, SchemaReactions, createSchemaField } from '@formily/react'
+import { createSchemaField, FormProvider, SchemaReactions } from '@formily/react'
 import dayjs from 'dayjs'
+import React from 'react'
 
 const SchemaField = createSchemaField({
   components: {
@@ -136,8 +136,8 @@ export const Items = () => {
               x-component="ArrayItems.SortHandle"
               x-component-props={{
                 style: {
-                  cursor: 'move'
-                }
+                  cursor: 'move',
+                },
               }}
             />
             <SchemaField.String
@@ -145,9 +145,7 @@ export const Items = () => {
               title="输入框"
               name="input"
               x-component="Input"
-              x-decorator-props={{
-
-              }}
+              x-decorator-props={{}}
               x-component-props={{ bordered: false, defaultValue: '啦啦啦啦' }}
             />
             <SchemaField.Object
@@ -159,16 +157,16 @@ export const Items = () => {
                 dependencies: [],
                 fulfill: {
                   state: {
-                    title : "{{$self.value?.input || $self.title}}"
-                  }
-                }
+                    title: '{{$self.value?.input || $self.title}}',
+                  },
+                },
               }}
-            // x-reactions={(field: GeneralField & { value: any }) => {
-            //   // field.title = field.value?.input || field.title
-            //   return {
-            //     de
-            //   }
-            // }}
+              // x-reactions={(field: GeneralField & { value: any }) => {
+              //   // field.title = field.value?.input || field.title
+              //   return {
+              //     de
+              //   }
+              // }}
             >
               {/* <SchemaField.Array
                 x-decorator="FormItem"
@@ -183,23 +181,14 @@ export const Items = () => {
                   defaultPickerValue: dayjs('2015-01-01', 'YYYY-MM-DD')
                 }}
               /> */}
-              <SchemaField.String
-                x-decorator="FormItem"
-                required
-                title="输入框"
-                name="input"
-                x-component="Input"
-              />
+              <SchemaField.String x-decorator="FormItem" required title="输入框" name="input" x-component="Input" />
             </SchemaField.Object>
             <SchemaField.Void
               // x-decorator="FormItem"
               x-component="ArrayItems.Remove"
             />
           </SchemaField.Object>
-          <SchemaField.Void
-            x-component="ArrayItems.Addition"
-            title="添加条目"
-          />
+          <SchemaField.Void x-component="ArrayItems.Addition" title="添加条目" />
         </SchemaField.Array>
       </SchemaField>
       <FormButtonGroup>

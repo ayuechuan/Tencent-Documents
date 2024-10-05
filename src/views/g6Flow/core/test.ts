@@ -1,17 +1,16 @@
-import { subStyleProps, Rect, RectStyleProps, CommonEvent } from "@antv/g6";
-import { ElementEvent, Text } from '@antv/g';
-import type { DisplayObjectConfig, Group, TextStyleProps, RectStyleProps as GRectStyleProps } from '@antv/g';
+import type { DisplayObjectConfig, Group, RectStyleProps as GRectStyleProps, TextStyleProps } from '@antv/g'
+import { ElementEvent, Text } from '@antv/g'
+import { CommonEvent, Rect, RectStyleProps, subStyleProps } from '@antv/g6'
 
 interface ExtendRectStyleProps extends GRectStyleProps {
   // 自定义属性
-  paragraph: string;
+  paragraph: string
 }
 
 export class ExtendRect extends Rect {
-
   constructor(options: DisplayObjectConfig<RectStyleProps>) {
     super({ ...options, size: [100, 100] } as any)
-    this.type = 'ExtendRect';
+    this.type = 'ExtendRect'
   }
 
   protected getTextStyle(attributes: Required<ExtendRectStyleProps>, container: Group): TextStyleProps {
@@ -23,16 +22,16 @@ export class ExtendRect extends Rect {
       text: '文档',
       x: 50,
       y: 10,
-      cursor: 'help'
+      cursor: 'help',
 
       // fontSize: 30,
       // ...attributes,
-    };
+    }
   }
 
   protected drawTextShape(attributes: Required<ExtendRectStyleProps>, container: Group) {
     // 自定义绘制逻辑，创建一个 G.Text
-   return this.upsert('text', Text, this.getTextStyle(attributes, container), container);
+    return this.upsert('text', Text, this.getTextStyle(attributes, container), container)
   }
 
   render(attrs: any, container: Group) {
@@ -40,22 +39,17 @@ export class ExtendRect extends Rect {
       ...attrs,
       // size: [100, 100]
     }
-    super.render(attr, container);
+    super.render(attr, container)
     // 调用自定义绘制逻辑
-    const text = this.drawTextShape(attr, container)!;
+    const text = this.drawTextShape(attr, container)!
     // text.addEventListener(CommonEvent.CLICK, (event:any) => {
     //   event.stopPropagation();
     //     console.log('---------',event);
-        
 
     // });
   }
 
-  update(attr?: Partial<RectStyleProps> | undefined): void {
-    
-  }
+  update(attr?: Partial<RectStyleProps> | undefined): void {}
 
-  destroy(): void {
-    
-  }
+  destroy(): void {}
 }

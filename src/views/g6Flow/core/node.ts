@@ -1,35 +1,25 @@
+import * as g6 from '@antv/g6'
+import { BaseNode, BaseNodeStyleProps, IconStyleProps } from '@antv/g6'
 
-import * as g6 from '@antv/g6';
-import { BaseNode, BaseNodeStyleProps, IconStyleProps } from '@antv/g6';
-
-type OgiginType = ConstructorParameters<typeof g6.Rect>[0];
+type OgiginType = ConstructorParameters<typeof g6.Rect>[0]
 
 export class CustomNode extends g6.Rect {
   constructor(options: OgiginType) {
-    super(options);
-    this.type = 'custom-Node';
+    super(options)
+    this.type = 'custom-Node'
   }
 
-  drawBadgeShapes() {
-    
-  }
+  drawBadgeShapes() {}
 
   update(attr?: Partial<g6.RectStyleProps> | undefined): void {
     // console.log('update', attr);
-    
   }
 
-  render(
-    atts: Required<RectStyleProps>,
-    container: g6.Rect
-  ) {
-    super.render(atts);
+  render(atts: Required<RectStyleProps>, container: g6.Rect) {
+    super.render(atts)
     // this.appendChild(, container );
   }
-
 }
-
-
 
 /**
  * <zh/> 矩形节点样式配置项
@@ -37,7 +27,7 @@ export class CustomNode extends g6.Rect {
  * <en/> Rect node style props
  */
 export interface RectStyleProps extends BaseNodeStyleProps {}
-type ParsedRectStyleProps = Required<RectStyleProps>;
+type ParsedRectStyleProps = Required<RectStyleProps>
 
 /**
  * <zh/> 矩形节点

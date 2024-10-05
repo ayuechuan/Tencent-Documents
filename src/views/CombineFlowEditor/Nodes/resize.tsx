@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { Handle, Position, NodeResizer } from '@xyflow/react';
+import { Handle, NodeResizer, Position } from '@xyflow/react'
+import { memo } from 'react'
 
-export function ResizerNode({ data }:any) {
+export function ResizerNode({ data }: any) {
   return (
     <>
       <NodeResizer minWidth={50} minHeight={50} />
@@ -31,7 +31,7 @@ export function ResizerNode({ data }:any) {
         />
       </div>
     </>
-  );
+  )
 }
 
-export default memo(ResizerNode);
+export default memo(ResizerNode)

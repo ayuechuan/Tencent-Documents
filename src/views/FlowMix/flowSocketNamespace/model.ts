@@ -7,15 +7,14 @@ export enum SocketEventKey {
   leave = 'leave',
   room = 'room',
   //  复杂事件（节点事件）
-  node = 'node'
-
+  node = 'node',
 }
 
 export type EventType =
-  'addNode' |
-  'updateNode' |
-  'selectNodeChange' |
-  'deleteNode' |
-  'addEgde' |
-  'updateEgde' |
-  'deleteEgde'
+  | 'addNode'
+  | 'updateNode'
+  | 'selectNodeChange'
+  | 'deleteNode'
+  | 'addEgde'
+  | 'updateEgde'
+  | 'deleteEgde'

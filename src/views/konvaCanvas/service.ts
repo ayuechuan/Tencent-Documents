@@ -1,9 +1,7 @@
-import { OpenApi } from "@/utils/axios";
-
+import { OpenApi } from '@/utils/axios'
 
 export class GridService extends OpenApi {
   static getDataSource() {
-    return this.register('/')
-      .getResponseArray(window.location.origin + '/Td' + '/data.json')
+    return this.register('/').getResponseArray(window.location.origin + '/Td' + '/data.json')
   }
 }

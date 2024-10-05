@@ -1,11 +1,13 @@
-import { Panel, useReactFlow, useStore, useStoreApi } from "@xyflow/react";
-import { GestureRightSlipIcon } from "tdesign-icons-react";
-import { CheckTagGroup, InputNumber, Tabs, Tag } from "tdesign-react";
-import { useFlowStore } from "../../FlowProvider";
-import { observer } from "mobx-react-lite";
-import { IconFont } from "@/utils/iconFont";
+import { Panel, useReactFlow, useStore, useStoreApi } from '@xyflow/react'
+import { observer } from 'mobx-react-lite'
+import { GestureRightSlipIcon } from 'tdesign-icons-react'
+import { CheckTagGroup, InputNumber, Tabs, Tag } from 'tdesign-react'
 
-const { TabPanel } = Tabs;
+import { IconFont } from '@/utils/iconFont'
+
+import { useFlowStore } from '../../FlowProvider'
+
+const { TabPanel } = Tabs
 
 const animations = [
   { value: 'animate__bounce', label: '跳动' },
@@ -33,36 +35,32 @@ const animations = [
 ]
 
 export const ConfigBar = observer(() => {
-  const { setNodes } = useReactFlow();
-  const store = useFlowStore();
+  const { setNodes } = useReactFlow()
+  const store = useFlowStore()
 
   const animationTag = useStore((state) => {
-    const currentNode = state.nodes
-      .filter((node) => node.id === store.toolbarStatus.selectNodeId);
-    if (!currentNode.length) return null;
+    const currentNode = state.nodes.filter((node) => node.id === store.toolbarStatus.selectNodeId)
+    if (!currentNode.length) return null
 
-    const firstNode = currentNode[0];
-    const className = firstNode?.data?.className as string;
-    if (!className) return null;
+    const firstNode = currentNode[0]
+    const className = firstNode?.data?.className as string
+    if (!className) return null
 
-    const {
-      length,
-      [length - 1]: animationClassName
-    } = className.split(' ');
+    const { length, [length - 1]: animationClassName } = className.split(' ')
 
     return {
       animationClassName,
-      label: animations.find((item) => item.value === animationClassName)?.label || ''
-    };
+      label: animations.find((item) => item.value === animationClassName)?.label || '',
+    }
   })
 
   if (!store.isOpenConfig) {
     return null
   }
   return (
-    <Panel position='top-right'>
-      <div className='config_panel react-flow__panel'>
-        <div className='box'>
+    <Panel position="top-right">
+      <div className="config_panel react-flow__panel">
+        <div className="box">
           <Tabs
             placement={'top'}
             defaultValue={store.toolbarStatus.styleModeType}
@@ -71,21 +69,26 @@ export const ConfigBar = observer(() => {
             onChange={(event) => {
               if (event === 'animation') {
                 store.toolbarStateChange({
-                  styleModeType: ''
+                  styleModeType: '',
                 })
               }
             }}
-            size='medium'
+            size="medium"
             style={{ margin: '5px 2px' }}
           >
             <TabPanel value={'style'} label={<IconFont type="icon-yangshi" />}>
               <div className="tabs-content">
-                <div className='animate_warp'>
-                  <div className='title'>动画</div>
-                  <div className='animate_title'>
+                <div className="animate_warp">
+                  <div className="title">动画</div>
+                  <div className="animate_title">
                     <div>动画类型:</div>
-                    {animationTag?.label ?
-                      <Tag size="small" theme="primary">{animationTag?.label}</Tag> : <div></div>}
+                    {animationTag?.label ? (
+                      <Tag size="small" theme="primary">
+                        {animationTag?.label}
+                      </Tag>
+                    ) : (
+                      <div></div>
+                    )}
                   </div>
                   <CheckTagGroup
                     options={animations}
@@ -99,19 +102,29 @@ export const ConfigBar = observer(() => {
                               ...node,
                               data: {
                                 ...node.data,
-                                className: key ? `animate__animated ${key[0]}` : ''
+                                className: key ? `animate__animated ${key[0]}` : '',
                               },
-                            };
+                            }
                           }
 
-                          return node;
-                        }))
+                          return node
+                        }),
+                      )
                     }}
                   />
                 </div>
-                <div className='animate_row'>持续时间<InputNumber size='small' defaultValue={5} theme="column" onChange={(v) => console.log(v)} /></div>
-                <div className='animate_row'>延迟时间<InputNumber size='small' defaultValue={5} theme="column" onChange={(v) => console.log(v)} /></div>
-                <div className='animate_row'>动画次数(大于 500为循环)<InputNumber size='small' defaultValue={5} theme="column" onChange={(v) => console.log(v)} /></div>
+                <div className="animate_row">
+                  持续时间
+                  <InputNumber size="small" defaultValue={5} theme="column" onChange={(v) => console.log(v)} />
+                </div>
+                <div className="animate_row">
+                  延迟时间
+                  <InputNumber size="small" defaultValue={5} theme="column" onChange={(v) => console.log(v)} />
+                </div>
+                <div className="animate_row">
+                  动画次数(大于 500为循环)
+                  <InputNumber size="small" defaultValue={5} theme="column" onChange={(v) => console.log(v)} />
+                </div>
               </div>
             </TabPanel>
             <TabPanel value={'animation'} label={<IconFont type="icon-donghua" />}>
@@ -134,4 +147,4 @@ export const ConfigBar = observer(() => {
       </div>
     </Panel>
   )
-});
+})

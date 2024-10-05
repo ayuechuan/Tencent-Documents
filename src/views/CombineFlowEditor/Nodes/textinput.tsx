@@ -1,28 +1,26 @@
-
-import { Handle, useStore, Position, useReactFlow, ReactFlowState, NodeProps } from '@xyflow/react';
-const dimensionAttrs = ['width', 'height'];
+import { Handle, NodeProps, Position, ReactFlowState, useReactFlow, useStore } from '@xyflow/react'
+const dimensionAttrs = ['width', 'height']
 
 export const TextNode = ({ id }: NodeProps) => {
-  const { setNodes } = useReactFlow();
+  const { setNodes } = useReactFlow()
   const dimensions = useStore((s: ReactFlowState) => {
-    const node = s.nodeLookup.get(id);
+    const node = s.nodeLookup.get(id)
     if (
       !node ||
       // !node.width ||
       // !node.height ||
       !s.edges.some((edge) => edge.target === id)
     ) {
-      return null;
+      return null
     }
 
     return {
       width: node.width,
       height: node.height,
-    };
-  });
+    }
+  })
 
-  console.log('dimensions',dimensions);
-  
+  console.log('dimensions', dimensions)
 
   const updateDimension = (attr: any) => (event: any) => {
     setNodes((nds) =>
@@ -34,13 +32,13 @@ export const TextNode = ({ id }: NodeProps) => {
               ...n.style,
               [attr]: parseInt(event.target.value),
             },
-          };
+          }
         }
 
-        return n;
+        return n
       }),
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -63,5 +61,5 @@ export const TextNode = ({ id }: NodeProps) => {
       </div>
       <Handle type="target" position={Position.Top} />
     </>
-  );
-};
+  )
+}
