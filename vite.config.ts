@@ -15,7 +15,7 @@ export default ({ command, mode }: ConfigEnv) => {
   console.log('Current environment configuration:', currentEnv) //loadEnv即加载根目录下.env.[mode]环境配置文件
   return defineConfig({
     plugins: [
-      react(),
+      react({tsDecorators : true}),
       // comlink(),
       AutoImport({
         imports: ['react', 'react-router-dom', { react: ['Fragment'] }],

@@ -356,10 +356,51 @@ export class StageManager {
     this.isDragging = true; // 设置为拖动状态
   };
 
+  hoveRect = {} as Partial<{x : number, y : number,}>;
   handleMouseMove(event: any): void {
     if (!this.isDragging) {
+      const pointer = event.target.getStage()?.getPointerPosition();
+      const childrens = (this.LayerRef!.children[2] as any)?.children;
+
+      // 如果没有子元素，直接返回
+      if (!childrens?.length) {
+        return;
+      }
+
+      let isHover = false;
+      let templateRect = {} as any;
+
+      for (let i = 0; i < childrens.length; i++) {
+        const group = childrens[i];
+        const rect = group.getClientRect();
+
+        if (this.haveIntersection(rect, pointer, 10)) {
+          // 当找到交集时，设置光标为指针
+          window.document.body.style.cursor = 'pointer';
+          isHover = true;
+
+          // 只在找到交集时计算 templateRect
+          templateRect = {
+            ...rect,
+            width: rect.width - 10,
+            height: rect.height
+          };
+          break;
+        }
+      }
+      // 设置光标为默认值，如果没有找到交集
+      if (!isHover) {
+        window.document.body.style.cursor = 'default';
+        // this.hoveRect?.x && (this.hoveRect = {});
+        this.hoveRect = {}
+        return;
+      }
+      //  有值
+      // !this.hoveRect?.x && (this.hoveRect = templateRect)
+      this.hoveRect = templateRect
       return;
     }
+
     const stage = event.target.getStage()!;
     const point = stage.getPointerPosition()!;
 
@@ -391,7 +432,7 @@ export class StageManager {
 
     //  计算拖动位置与哪一个 group 相交
     const pointer = event.target.getStage()?.getPointerPosition();
-    (this.LayerRef!.children[1] as any).children.forEach((group: typeGroup, i: number) => {
+    (this.LayerRef!.children[2] as any).children.forEach((group: typeGroup, i: number) => {
       const rect = group.getClientRect();
       if (this.haveIntersection(rect, pointer)) {
         //  origin group === current drag group
@@ -484,13 +525,13 @@ export class StageManager {
     return this.calculateBarHeight !== this.VIEWPORT_HEIGHT
   }
 
-  haveIntersection(rect: any, point: any): boolean {
+  haveIntersection(rect: any, point: any, marign = 0): boolean {
     const { x, y, width, height } = rect;
     const { x: pointX, y: pointY } = point;
 
     return (
       pointX >= x &&
-      pointX <= x + width &&
+      pointX <= x + width - marign &&
       pointY >= y &&
       pointY <= y + height
     );

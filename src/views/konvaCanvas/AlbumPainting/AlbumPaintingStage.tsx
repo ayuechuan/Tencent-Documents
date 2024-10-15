@@ -1,11 +1,13 @@
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { Group, KonvaNodeComponent, Layer, Rect, Stage, StageProps } from "react-konva";
+import { observer } from "mobx-react-lite";
+import { Group, Layer, Rect, Stage } from "react-konva";
 import { Portal } from "react-konva-utils";
-import React, { cloneElement, createElement, LegacyRef, MutableRefObject, PropsWithChildren, ReactNode } from "react";
+import { createElement, PropsWithChildren, ReactNode } from "react";
 import Konva from "konva";
 
 import { ItemProps } from "./model";
 import { useAlbumPaintingStore } from "../hooks";
+import { toJS } from "mobx";
+import { HoverShadow } from "./components";
 
 interface Props {
   /**
@@ -63,6 +65,7 @@ export const AlbumPaintingStage = observer((
     return () => void effect?.();
   }, [])
 
+  // console.log('stageManager.hoveRect', toJS(stageManager.hoveRect), !!stageManager.hoveRect?.width);
 
   return (
     <Stage
@@ -172,7 +175,26 @@ export const AlbumPaintingStage = observer((
             }}
           /> */}
         </Portal>
-        <Group id='one' offsetY={stageManager.scrollTop} offsetX={stageManager.scrollLeft}>
+        {/* <Rect
+          fill="rgba(255, 255, 255, 0.2)" // 透明填充
+          visible={!!stageManager.hoveRect?.x}
+          shadowColor="rgba(0,0,0,0.8)" // 阴影颜色
+          shadowBlur={15} // 阴影模糊程度
+          shadowOffsetX={5} // 阴影偏移X
+          shadowOffsetY={5} // 阴影偏移Y
+          // x={766}
+          // y={295}
+          // width={275}
+          width={stageManager.finalWidth - 20}
+          height={stageManager.rowHeight - 20}
+          {...stageManager.hoveRect}
+        /> */}
+        <HoverShadow />
+        <Group
+          id='one'
+          offsetY={stageManager.scrollTop}
+          offsetX={stageManager.scrollLeft}
+        >
           {stageManager.showItems.map(({ x, y, width, height, rowIndex, columnIndex }) => {
             return createElement(ItemChildrenRender, {
               x,

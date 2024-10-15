@@ -212,7 +212,8 @@ export const getItemMetadata = ({
     for (let i = lastMeasuredIndex + 1; i <= index; i++) {
       const size = itemSize(i)
       itemMetadataMap[i] = {
-        offset : offset + 10,
+        offset,
+        // offset : offset + 10,
         size,
       }
 

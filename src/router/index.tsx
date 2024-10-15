@@ -11,6 +11,10 @@ import { DraggableComponent } from '@/views/SmartGridTable'
 import { CollectionTable } from '@/views/CollectionTable'
 import { SmartSheetLayout } from '@/views/konvaCanvas'
 import { AlbumPainting } from '@/views/konvaCanvas/AlbumPainting'
+import { Board } from '@/views/konvaCanvas/Board'
+import { SmartTable } from '@/views/konvaCanvas/SmartTable'
+import { Conference } from '@/views/konvaCanvas/Conference'
+import { ConferenceProvider } from '@/views/konvaCanvas/Conference/store/context'
 
 const Home = lazy(() => import('@/views/Home'))
 const About = lazy(() => import('@/views/About'))
@@ -42,8 +46,15 @@ export default function Router() {
       path: '/konva',
       element: <SmartSheetLayout />,
       children: [
-        { index : true, element: <Navigate to={'/konva/album'} replace /> },
-        { path: 'album', element: <AlbumPainting /> }
+        { index: true, element: <Navigate to={'/konva/conference'} replace /> },
+        { path: 'album', element: <AlbumPainting /> },
+        { path: 'board', element: <Board /> },
+        { path: 'table', element: <SmartTable /> },
+        {
+          path: 'conference', element: <ConferenceProvider>
+            <Conference />
+          </ConferenceProvider>
+        }
       ]
     },
   ])

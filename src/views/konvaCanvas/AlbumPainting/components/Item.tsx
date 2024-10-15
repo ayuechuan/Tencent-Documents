@@ -1,17 +1,29 @@
 import { Group, Rect, Image, Text } from "react-konva";
 import png from '@assets/15.png'
 import { useImage } from "../../hooks/useImage";
+import { useAlbumPaintingStore } from "../../hooks";
+import { observer } from "mobx-react-lite";
+import { useMount } from "ahooks";
+import Konva from 'konva';
 
-export const Item = (props: any) => {
+export const Item = ((props: any) => {
   const { rowIndex, columnIndex, x = 0, y = 0, width, height, nums } = props;
+  const groupRef = useRef<Konva.Group>(null);
+  useMount(() => {
+    // groupRef.current!.cache();
+  })
+
   return (
     <Group
+      ref={groupRef}
       id={`${rowIndex}:${columnIndex}`}
       onContextMenu={(event) => {
         event.evt.stopPropagation();
         event.evt.preventDefault();
         console.log('event', event);
-      }}>
+      }}
+
+    >
       <Rect
         x={x}
         y={y}
@@ -22,25 +34,26 @@ export const Item = (props: any) => {
         fill="#FFF"
         stroke="grey"
       />
-      <Image
+      {/* <Image
         x={x}
         y={y}
         // ref={imgRef as any}
         height={160}
-        width={width}
+        width={(width || 2) - 1}
         image={useImage(png)[0]}
         // image={useImage('https://image.uisdc.com/wp-content/uploads/2023/08/Character-avatar-20230802-1.png')[0]}
         hitStrokeWidth={1}
-        strokeWidth={0.2}
+        strokeWidth={0.1}
         fill="#FFF"
         stroke="grey"
-      />
+      /> */}
       <Text
         x={x + 10}
         y={y + 180}
         height={30}
         width={width}
         opacity={0.8}
+
         text={'App 启动页设计'}
         fontSize={12}
         verticalAlign="top"
@@ -84,4 +97,4 @@ export const Item = (props: any) => {
 
     </Group>
   )
-}
+})

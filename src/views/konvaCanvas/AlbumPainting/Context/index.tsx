@@ -5,12 +5,15 @@ import { DataManagement } from "../Stores/DataManagement";
 
 export const AlbumPaintingStore = createContext(
   {} as {
+    // 列表数据管理器
     dataManager: DataManagement,
+    // 画布数据管理器
     stageManager: StageManager,
+    // 其他响应数据管理
     operationStore: OperationStore,
   }
 );
-
+//  画册
 export function AlbumPaintingProvider({ children }: PropsWithChildren) {
   const [dataManager] = useState(() => new DataManagement())
   const [stageManager] = useState(() => new StageManager(dataManager))

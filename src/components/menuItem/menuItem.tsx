@@ -1,12 +1,14 @@
-import 'tdesign-react/esm/dropdown/style/index'
-import 'rc-dropdown/assets/index.css'
 
+// import 'rc-dropdown/assets/index.css'
+import { Dropdown } from 'tdesign-react'
 import { FC, ReactNode } from 'react'
+import './index.less'
 
 export interface IMenuItem {
-  key: string
-  label: ReactNode
-  onClick: (key: string) => void
+  key: string;
+  label: ReactNode;
+  onClick: (key: string) => void;
+  className?: string
 }
 
 interface Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
@@ -38,7 +40,7 @@ export const MenuItem: FC<Props> = ({ items, onClick, ...props }) => {
     >
       <div className="Td-dropdown__menu Td-dropdown__menu--right">
         {items.map((item) => (
-          <div key={item.key} data-menukey={item.key}>
+          <div key={item.key} data-menukey={item.key} className={item.className}>
             <li className="Td-dropdown__item Td-dropdown__item--theme-default">
               <span className="Td-dropdown__item-text">{item.label}</span>
             </li>
