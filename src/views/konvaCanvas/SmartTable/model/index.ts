@@ -1,5 +1,6 @@
 import { KonvaEventObject } from "konva/lib/Node";
 import { Stage } from "konva/lib/Stage";
+import { FeatureCanvas } from "../canvas/FeatureCanvas";
 
 export class IFeatureModel {
   name!: string;
@@ -12,3 +13,7 @@ export class IFeatureModel {
   onScroll() { }
   paint() { }
 }
+
+export type IFeature = [new (featureCanvas: FeatureCanvas, model?: any) =>
+  IFeatureModel, { requiredEdit: boolean }
+]

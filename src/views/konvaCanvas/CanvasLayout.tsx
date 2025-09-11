@@ -7,7 +7,6 @@ const { MenuItem } = Menu;
 export function SmartSheetLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  console.log('pathname', pathname);
 
   return (
     <Layout onDragOver={(e) => e.preventDefault()}>
@@ -22,12 +21,12 @@ export function SmartSheetLayout() {
           }}
         >
           <MenuItem value="/konva/table">表格</MenuItem>
-          <MenuItem value="3">甘特图</MenuItem>
+          <MenuItem value="/konva/group">甘特图</MenuItem>
           <MenuItem value="/konva/board">看板</MenuItem>
           <MenuItem value="5">日历</MenuItem>
           <MenuItem value="/konva/album">画册</MenuItem>
           <MenuItem value="/konva/conference">会议布局</MenuItem>
-          
+
         </Menu>
       </Aside>
       <Layout>

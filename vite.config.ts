@@ -10,12 +10,17 @@ import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv) => {
+  
   const currentEnv = loadEnv(mode, process.cwd())
   console.log('Current mode:', command, mode)
   console.log('Current environment configuration:', currentEnv) //loadEnv即加载根目录下.env.[mode]环境配置文件
   return defineConfig({
     plugins: [
-      react({tsDecorators : true}),
+      alloyWorkerPlugin({
+        workerDir: 'src/worker',
+        outDir: 'dist'
+      }),
+      react({ tsDecorators: true }),
       // comlink(),
       AutoImport({
         imports: ['react', 'react-router-dom', { react: ['Fragment'] }],
@@ -45,6 +50,21 @@ export default ({ command, mode }: ConfigEnv) => {
       //   preventAssignment: true,
       // })
     ],
+    // Worker 相关配置
+    worker: {
+      format: 'es',
+      rollupOptions: {
+        output: {
+          // Worker 文件命名
+          entryFileNames: 'worker-[name]-[hash].js'
+        }
+      }
+    },
+
+    // 全局变量定义
+    define: {
+      __WORKER__: 'false'
+    },
     //项目部署的基础路径,
     base: currentEnv.VITE_PUBLIC_PATH,
     mode,
@@ -153,4 +173,59 @@ export default ({ command, mode }: ConfigEnv) => {
       cssCodeSplit: true,
     },
   })
+}
+
+
+
+export function alloyWorkerPlugin(options: any): Plugin {
+  const { workerDir = 'src/worker', outDir = 'dist' } = options
+
+  return {
+    name: 'vite-plugin-alloy-worker',
+    // 处理 alloy-worker! 前缀的导入
+    resolveId(id) {
+      if (id.startsWith('alloy-worker!')) {
+        const workerPath = id.replace('alloy-worker!', '')
+        return `\0alloy-worker:${workerPath}`
+      }
+    },
+
+    // 加载 worker 文件并返回 URL
+    load(id) {
+      if (id.startsWith('\0alloy-worker:')) {
+        const workerPath = id.replace('\0alloy-worker:', '')
+
+        return `
+          // @ts-nocheck
+          const workerUrl = new URL('${workerPath}?worker', import.meta.url)
+          export default workerUrl.href
+        `
+      }
+    },
+
+    // 配置构建选项
+    config(config, { command }) {
+      // 确保 worker 文件被正确处理
+      config.worker = config.worker || {}
+      config.worker.format = 'es'
+
+      // 添加全局变量定义
+      config.define = config.define || {}
+      config.define.__WORKER__ = 'false'
+
+      // Worker 构建时的全局变量
+      config.worker.plugins = config.worker.plugins || []
+      config.worker.plugins.push({
+        name: 'worker-env',
+        config() {
+          return {
+            define: {
+              __WORKER__: 'true',
+              'self.window': 'self'
+            }
+          }
+        }
+      })
+    }
+  }
 }

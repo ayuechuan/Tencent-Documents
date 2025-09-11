@@ -12,6 +12,13 @@ import Routes from '@/router'
 
 import { ContextMenuProvider } from './contexts/contextMenuRight'
 import { WebWorkerProvider } from './providers'
+import { SocketProvider } from './providers/socket'
+import { EventBusProvider, useEventBus } from './providers/eventBus'
+import { useGlobaEventBus } from './hooks/use-globa-event-bus'
+import { FilterRule } from './utils/Filter'
+import createAlloyWorker from './worker'
+
+console.log(FilterRule);
 
 function useVconolseController() {
   const [vc] = useVcosole()
@@ -23,8 +30,23 @@ function useVconolseController() {
   }, [])
 }
 
+
 const App = ({ locales }: { locales: GlobalConfigProvider }) => {
   useVconolseController()
+
+  useEffect(() => {
+    // main.ts
+
+
+    const alloyWorker = createAlloyWorker({
+      workerName: 'my-worker',
+      isDebugMode: true
+    })
+
+    // API 完全一样
+    alloyWorker.workerAbilityTest.communicationTest()
+      .then(result => console.log('我真的读了------',result))
+  }, [])
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL as string}>
       <Suspense fallback={<SuspenseFallback />}>
@@ -35,14 +57,25 @@ const App = ({ locales }: { locales: GlobalConfigProvider }) => {
           }}
         >
           <WebWorkerProvider>
-            {/* <ContextMenuProvider> */}
-            <Routes />
-            {/* </ContextMenuProvider> */}
+            <ContextMenuProvider>
+              <SocketProvider>
+                <EventBusProvider>
+                  <RegistHooks />
+                  <Routes />
+                </EventBusProvider>
+              </SocketProvider>
+            </ContextMenuProvider>
           </WebWorkerProvider>
         </ConfigProvider>
       </Suspense>
     </BrowserRouter>
   )
+};
+
+export function RegistHooks() {
+  useVconolseController();
+  useGlobaEventBus();
+  return null;
 }
 
 function SuspenseFallback() {

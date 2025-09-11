@@ -38,6 +38,8 @@ export class ConferenceStore {
   moveingSeat: null | { x: number, y: number } = null;
   //  点击座位时 鼠标坐标相对座位的坐标  用于拖动中减去这段距离
   oldRect: any = {};
+  //  未占用座位
+  unoccupiedSeats = observable.array([]) as ISeat[];
   //  已占用座位
   occupiedSeats = [
     { key: 'top-2', occupied: true },
@@ -51,8 +53,7 @@ export class ConferenceStore {
     { key: 'top-13', occupied: true },
     { key: 'top-14', occupied: true },
   ] as ISeat[];
-  //  未占用座位
-  unoccupiedSeats = observable.array([]) as ISeat[];
+
   cache = new Map<string, {}>();
   highlight = {
     x: 0,
@@ -96,9 +97,8 @@ export class ConferenceStore {
     }
     this.allSeats = allSeats;
   }
-
+  // 找出未占用的座位
   getUnoccupiedSeats() {
-    // 找出未占用的座位
     return this.allSeats.filter(pos =>
       !this.occupiedSeats.some(occupied =>
         occupied.key === pos.key
@@ -127,7 +127,7 @@ export class ConferenceStore {
       }
 
     }
-    this.getSeats();
+    // this.getSeats();
     this.unoccupiedSeats = this.getUnoccupiedSeats();
   }
 

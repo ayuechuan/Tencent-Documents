@@ -1,7 +1,6 @@
 import Konva from "konva";
 import { Context } from "konva/lib/Context";
 import { ShapeConfig } from "konva/lib/Shape";
-import { GetSet } from "konva/lib/types";
 
 export interface Props extends ShapeConfig {
   strokeTopColor?: string

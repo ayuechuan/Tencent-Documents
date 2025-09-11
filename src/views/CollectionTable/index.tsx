@@ -7,7 +7,7 @@ import {
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { useDraggable } from "@dnd-kit/core";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import { CSS } from '@dnd-kit/utilities'
 import './index.less';
 import { useImmer } from "use-immer";
@@ -449,7 +449,7 @@ export function SidebarField(props: any) {
 function DraggableSidebarField(props: any) {
   const { field, ...rest } = props;
 
-  const id = useRef(nanoid());
+  const id = useRef('');
 
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: id.current,

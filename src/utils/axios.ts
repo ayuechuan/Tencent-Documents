@@ -8,73 +8,16 @@ import axios, {
   AxiosResponseTransformer,
   Canceler,
   CreateAxiosDefaults,
-  InternalAxiosRequestConfig,
 } from 'axios'
-import { message } from 'tdesign-react'
-
-import { AxiosDownload, Upload, UploadStream, UrlDownload } from './axios.model'
+import {
+  AxiosDownload,
+  Upload,
+  UploadStream,
+  UrlDownload
+} from './axios.model'
 import { BaseInterceptors } from './axios.model'
-import { RequestQueue } from './axios.queue'
-
-abstract class IErrorInfos {
-  public abstract readonly code: number
-  public abstract readonly message: string
-  cause?: string
-  detail?: string
-}
-
-//  封装 axios reponse error 实例
-export class HttpResponesError implements IErrorInfos {
-  code!: number
-  //  一般信息
-  message!: string
-  cause?: string
-  //  详细错误信息
-  detail?: string
-  response?: AxiosResponse
-
-  constructor(error: Partial<HttpResponesError>) {
-    Object.assign(this, error)
-  }
-
-  public openMessage(custom?: (error: HttpResponesError) => void): void
-  public openMessage(tips?: string): void
-  public openMessage(tips?: string | ((error: HttpResponesError) => void)): void {
-    if (typeof tips === 'string') {
-      const error = tips ?? this.message
-      message.error(error)
-    } else {
-      //  自定义当前错误显示结果
-      tips?.(this)
-    }
-  }
-
-  //  模态框显示错误
-  public showModal(tips?: string) {}
-}
-
-export class AxiosErrorModel<T = void> {
-  data?: T
-  error?: HttpResponesError
-
-  static async callbackArray<CT>(promise: Promise<CT>): Promise<[null, CT] | [HttpResponesError, null]> {
-    return promise
-      .then<[null, CT]>((data: CT) => [null, data])
-      .catch<[HttpResponesError, null]>((err: HttpResponesError) => [err, null])
-  }
-
-  static async callbackArray_body<CT>(
-    promise: Promise<AxiosResponse<CT>>,
-  ): Promise<[null, AxiosErrorModelWithHeder<CT>] | [AxiosErrorModelWithHeder, null]> {
-    return promise
-      .then<[null, AxiosErrorModelWithHeder<CT>]>((data) => [null, data])
-      .catch<[AxiosErrorModelWithHeder, null]>((err: AxiosErrorModelWithHeder) => [err, null])
-  }
-}
-
-export class AxiosErrorModelWithHeder<T = void> extends AxiosErrorModel<T> {
-  response?: AxiosResponse<T, void>
-}
+import { OpenApiRequestQueue } from './axios.queue'
+import { AxiosErrorModel, HttpResponesError } from './Error.abstract.model'
 
 /**
  * 封装基本的拦截器
@@ -82,16 +25,15 @@ export class AxiosErrorModelWithHeder<T = void> extends AxiosErrorModel<T> {
  */
 class Instace {
   //  请求队列
-  protected readonly requestQueue = new RequestQueue()
-  public instace: AxiosInstance
+  protected readonly requestQueue = new OpenApiRequestQueue();
+  public instace: AxiosInstance;
+
   constructor(
     public readonly key = '/',
     private readonly config: CreateAxiosDefaults & {
       /** 重写baseURL类型 为了获得类型提示 */ baseURL?: ERequestKeys
     } = {},
-    private readonly otherConfig: Partial<{
-      isRefreshToken: boolean
-    }> = { isRefreshToken: false },
+    private readonly otherConfig: Partial<{ isRefreshToken: boolean }> = { isRefreshToken: false },
   ) {
     const transformResponse = (data: any, headers: AxiosResponseHeaders) => {
       //  如果data?.size超过了浏览器最大安全数
@@ -201,7 +143,7 @@ class Instace {
               switch (error.status) {
                 case 401:
                   const error = new HttpResponesError({ ...response.data, message: '未登录或登录已过期，请重新登录！' })
-                  error.openMessage = () => {}
+                  error.openMessage = () => { }
                   return Promise.reject(error)
               }
               return Promise.reject()
@@ -230,7 +172,8 @@ class Instace {
                 const getItemConfig = this.requestQueue.peddingRequests.get(String(Math.random() * 10))
                 if (getItemConfig) {
                   this.requestQueue.addRequest('', {
-                    resolveCallback: (configAfterUpdateAuthorization) => resolve(axios(configAfterUpdateAuthorization)),
+                    resolveCallback: (configAfterUpdateAuthorization) =>
+                      resolve(axios(configAfterUpdateAuthorization)),
                   })
                   return
                 }
@@ -312,10 +255,10 @@ class Instace {
           signal: controller ? controller.signal : undefined,
         }),
       ).then((result) => {
-        const [error, data] = result
+        const [error, data] = result;
         if (error) {
-          reject(error)
-          return
+          reject(error);
+          return;
         }
         const blob = new Blob([data.data!], { type: data?.response!.headers['content-type'] })
         const a = document.createElement('a')
@@ -353,8 +296,8 @@ class Instace {
  * 开放 API 统一管理入口
  */
 export class OpenApi {
-  public static instace: Instace
-  public static readonly instaceMap: Map<string, Instace> = new Map()
+  public static instace: Instace;
+  public static readonly instaceMap: Map<string, Instace> = new Map();
 
   /**
    * 可单个 | 多个实例同时添加
@@ -363,14 +306,11 @@ export class OpenApi {
   public static add(instace: Instace): typeof OpenApi
   public static add(instace: Instace[]): typeof OpenApi
   public static add(instace: Instace | Instace[]): typeof OpenApi {
-    if (Array.isArray(instace)) {
-      instace.forEach((item) => {
-        this.instaceMap.set(item.key, item)
-      })
-    } else {
-      this.instaceMap.set(instace.key, instace)
-    }
-    return this
+    instace = Array.isArray(instace) ? instace : [instace];
+    instace.forEach((item) => {
+      this.instaceMap.set(item.key, item)
+    });
+    return this;
   }
 
   /**
@@ -381,7 +321,7 @@ export class OpenApi {
    */
   public static register<T extends ERequestKeys>(key?: T): Instace {
     this.instace = this.instaceMap.get(key || '/') || this.instaceMap.get('/')!
-    return this.instace
+    return this.instace;
   }
 }
 
@@ -423,7 +363,7 @@ export class FileServer extends OpenApi {
       },
       controller,
       onDownloadProgress(progressEvent: AxiosProgressEvent) {
-        const progress = progressEvent.progress
+        const progress = progressEvent.progress;
         //  监听进度
         console.log('progress', progress)
       },
@@ -435,6 +375,7 @@ export class FileServer extends OpenApi {
    * @returns
    */
   public static serach(params: any) {
-    return this.register('/socketServer').getResponseArray<{ name: string }>('/public/v1/goods/search', params)
+    return this.register('/')
+      .getResponseArray<{ name: string }>('/public/v1/goods/search', params)
   }
 }

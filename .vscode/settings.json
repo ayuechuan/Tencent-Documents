@@ -1,4 +1,6 @@
 {
-  "editor.fontFamily": "Hack, 'Courier New', monospace",
-  "editor.fontSize": 15
+  "editor.fontFamily": "Hack Nerk Font, monospace",
+  "editor.fontSize": 12,
+  "terminal.integrated.fontFamily": "Hack Nerd Font",
+  "editor.fontWeight": "500"
 }

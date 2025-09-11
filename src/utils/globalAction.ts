@@ -1,26 +1,26 @@
 export class GlobalOperate {
-  constructor() {}
+  constructor() { }
 
   public start() {
     const sideEffect = this.onCopy()
     return () => {
-      sideEffect()
+      sideEffect.unsubscribe();
     }
   }
 
   //  查看复制
-  private onCopy(): () => void {
-    const handle = () => {
+  private onCopy() {
+    const controller = new AbortController();
+    document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         //  拿到剪切板的内容
         navigator.clipboard.readText().then((res) => {
           console.log('拿到剪切板的内容', res)
         })
       }
-    }
-    document.addEventListener('visibilitychange', handle)
-    return () => {
-      document.removeEventListener('visibilitychange', handle)
+    }, { signal: controller.signal })
+    return {
+      unsubscribe: () => { controller.abort(); }
     }
   }
 }

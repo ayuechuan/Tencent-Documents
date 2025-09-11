@@ -9,6 +9,8 @@ import sync, { cancelSync, flushSync, getFrameData } from 'framesync'
 import ReactDOM from 'react-dom/client'
 import { GlobalConfigProvider } from 'tdesign-react/esm/config-provider/type'
 
+// import localses from 'tdesign-react/esm/locale/zh_CN'
+
 export class Bootstrap {
   private readonly root = document.getElementById('root')!
   private reactDomRootElement!: ReactDOM.Root
@@ -45,12 +47,12 @@ export class Bootstrap {
 
   public async render(): Promise<void> {
     try {
-      // this.formatParamsToken();
+      this.formatParamsToken();
       // this.rewriteLog();
       // this.isDebug();
-      // this.initConfig();
+      this.initConfig();
       this.longtask()
-      // this.anmation();
+      this.anmation();
       this.mount()
       // this.server();
       // this.delayload();
@@ -141,10 +143,11 @@ export class Bootstrap {
       stop: () => cancelSync.update(passTimestamp),
     }
   }
-
+    
   public async mount() {
     this.reactDomRootElement = ReactDOM.createRoot(this.root)
     const locales = await this.loadLocales()
+
     const App = import.meta.glob('./App.tsx', { eager: true })['./App.tsx'] as typeof import('./App')
     console.log('App', App)
     // ReactDOM.createRoot(document.getElementById('roots')!).render(<>10000000000</>);
@@ -227,7 +230,7 @@ export class Bootstrap {
       const consoles = window.console as Console
       for (const item in consoles) {
         if (Reflect.has(consoles, item)) {
-          consoles[item as keyof Console] = (() => {}) as never
+          consoles[item as keyof Console] = (() => { }) as never
         }
       }
     }
@@ -236,20 +239,20 @@ export class Bootstrap {
   public longtask(): void {
     const observer = new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries()
-      for (const element of entries) {
-        console.log('检测耗时任务===', element.duration)
+      for (const entry of entries) {
+        console.log('检测耗时任务===',entry.duration, entry.name)
       }
     })
 
     observer.observe({
-      entryTypes: ['longtask'],
+      entryTypes: ['longtask'  , 'measure'],
     })
   }
 
   /**
    * 初始化项目配置 | 第三方依赖配置
    */
-  private initConfig() {}
+  private initConfig() { }
 
   private renderConole(e: string, size?: number): string {
     return (

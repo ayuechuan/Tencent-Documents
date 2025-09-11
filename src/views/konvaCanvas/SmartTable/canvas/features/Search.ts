@@ -11,7 +11,7 @@ import { toJS } from 'mobx';
 
 @observer('model')
 export class Search implements IFeatureModel {
-  name = 'search';
+  name = 'search'; 
   container!: Konva.Group;
   cell = { x: 0, y: 0, width: 0, height: 0 } as IRect;
 
@@ -19,6 +19,7 @@ export class Search implements IFeatureModel {
     private readonly featureCanvas: FeatureCanvas,
     public readonly model?: Store
   ) { }
+
   onMouseDown(event: KonvaEventObject<any, Stage>): void {
 
   }

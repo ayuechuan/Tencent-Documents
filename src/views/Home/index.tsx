@@ -14,7 +14,11 @@ import { useWebWorker } from '@/hooks/useWebWorker'
 import { toggleDark } from '@/utils/theme'
 
 import HomeStyle from './index.module.scss'
-
+import { useEventBus } from '@/providers/eventBus'
+import { globaErrorKey } from '@/constants/globa.event'
+import { Searchs } from './components/Search'
+import { Cache } from '@/utils/Upload'
+import { useHook } from './hook'
 const data: TableProps['data'] = []
 const total = 100
 
@@ -51,6 +55,24 @@ const statusNameListMap = {
 const publicPath = import.meta.env.VITE_PUBLIC_PATH
 console.log('10086', publicPath)
 
+
+export class FF extends Cache {
+  init() {
+    // FF.set('111', { crc32: '', md5: '' })
+    // FF.set('222', { crc32: '', md5: '' })
+    this.setToCache('111', { crc32: '', md5: '' })
+    this.setToCache('222', { crc32: '', md5: '' })
+  }
+  log() {
+    console.log('FFFFF', FF.details);
+
+  }
+}
+
+
+
+
+
 function Home() {
   const navigate = useNavigate()
   const workerInstance = useWebWorker()
@@ -64,11 +86,12 @@ function Home() {
   const [showHeader] = useState(true)
 
   const config = useContext(ConfigContext)
+  const ref = useRef<HTMLDivElement | undefined>();
 
   const props = {
-    onRowContextMenu: (event: any) => {},
-    onContextMenu: (event: any) => {},
-    oncontextmenu: (event: any) => {},
+    onRowContextMenu: (event: any) => { },
+    onContextMenu: (event: any) => { },
+    oncontextmenu: (event: any) => { },
   } as any
 
   const table = (
@@ -144,18 +167,29 @@ function Home() {
     // })
   })
 
+  const eventBus = useEventBus();
+  useHook(ref)
+  console.log('eventBus', eventBus , ref.current);
+
   // return <PostsTab></PostsTab>
   return (
-    <div className={HomeStyle.home}>
+    <div className={HomeStyle.home} ref={ref as any }>
       {count}
       <Button
         type="button"
         onClick={() => {
-          setCount(count + 1)
+          // setCount(count + 1)
+          eventBus?.emit(globaErrorKey['error-permission'], '123')
+          setTimeout(() => {
+            navigate('/home')
+          }, 300);
         }}
       >
-        确定1
+        发送事件
       </Button>
+      <div>
+        <Searchs />
+      </div>
       <div
       // onContextMenu={() => {
       //   contextMenu.handleItems([{

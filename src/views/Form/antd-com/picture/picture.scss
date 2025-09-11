@@ -1,0 +1,23 @@
+.pic-wrap {
+  border: 1px dashed #a2c8f0;
+  width: 104px;
+  height: 104px;
+  text-align: center;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .pic-file-image {
+    margin-bottom: 10px;
+    font-size: 22px;
+    color: #1890ff;
+  }
+  .pic-title {
+    color: #1890ff;
+    margin: 0;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+  }
+}

@@ -94,8 +94,8 @@ export class BoardStore {
 
     this.cloneGroupRect = {
       ...this.cloneGroupRect,
-      x: pointer.x,
-      y: pointer.y,
+      x: pointer.x - 15,
+      y: pointer.y - 15,
     };
 
     const childrens = this.layerRef!.children;
@@ -263,7 +263,7 @@ export class BoardStore {
     }
     // 生成数据 URL
     const dataURL = group!.getStage()!.toDataURL({
-      pixelRatio: 3, // 增加像素比以提高图像质量
+      pixelRatio: 2, // 增加像素比以提高图像质量
       ...groupRect,
       y: groupRect.y
     });

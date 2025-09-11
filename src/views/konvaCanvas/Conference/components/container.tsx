@@ -21,7 +21,7 @@ export const Container = observer(() => {
       ref={(refs) => {
         (window as any).refs = refs
       }}
-      draggable={store.draggable}
+      // draggable={store.draggable}
       onDragEnd={(events) => {
         store.tableX = events.target.attrs.x;
         store.tableY = events.target.attrs.y;
@@ -101,7 +101,7 @@ export const Container = observer(() => {
             width={store.imageSize}
             image={img3}
             strokeEnabled={false}
-            // fill="#F8F8F8"
+          // fill="#F8F8F8"
 
           />
         </Group>
@@ -130,8 +130,6 @@ export const Container = observer(() => {
           </Group>
         )
       })}
-
-
     </Group>
   )
 });

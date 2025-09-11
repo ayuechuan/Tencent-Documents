@@ -1,7 +1,7 @@
 import * as Comlink from 'comlink'
 import React from 'react'
 
-import { Iremote } from '@/worker/worker'
+import { Iremote } from '@/worker1/worker'
 
 export interface Unsubscribable {
   unsubscribe(): void

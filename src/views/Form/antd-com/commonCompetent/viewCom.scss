@@ -1,0 +1,69 @@
+.radio-view-wrap {
+  display: flex;
+  flex-direction: column;
+  .redio-empety-son-wrap {
+  }
+  .redio-view-son-wrap {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    .ico-btn {
+      cursor: all-scroll;
+      margin-right: 8px;
+      color: #419cf3;
+    }
+    .redio-border {
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(128, 133, 144, 0.4);
+      border-radius: 100px;
+    }
+    .select-border {
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(128, 133, 144, 0.4);
+    }
+    .input {
+      font-size: 16px;
+      background:none;
+      outline:none;
+      border: 1px solid transparent;
+      padding: 5px;
+      margin: 0;
+      width: 80%;
+      margin-left: 2px;
+      &:focus{
+        background: rgba(155, 220, 255, 0.3);
+        border: 1px dashed #7ac2f5;
+      }
+    }
+    .value-wrap {
+      display: none;
+      .value-icon {
+        font-size: 20px;
+        margin-left: 5px;
+        color: #419cf3;
+        cursor: pointer;
+      }
+    }
+    &:hover {
+      &> .input {
+        border: 1px dashed #7ac2f5;
+      }
+      &> .value-wrap {
+        display: flex;
+      }
+    }
+  }
+  .active-wrap {
+    padding-top: 15px;
+    display: flex;
+    a {
+      margin-right: 30px;
+      font-size: 16px;
+      span {
+        margin-left: 2px;
+      }
+    }
+  }
+}

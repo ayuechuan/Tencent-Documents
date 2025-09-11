@@ -7,11 +7,11 @@ export interface SpreadAxiosRequestConfig extends AxiosRequestConfig {
   canceler?: Canceler
 }
 
-export class RequestQueue {
+export class OpenApiRequestQueue {
   /**
    * token 是否正处于过期状态
    */
-  public isTokenExpired: boolean = false
+  public isTokenExpired: boolean = false;
   /**
    * 过期时 需重新 request 请求的队列
    */
@@ -57,7 +57,8 @@ export class RequestQueue {
     return new Promise((resolve) => {
       axios
         .get('/api/refreshToken', { headers: { Authorization: 'no-auth' } })
-        .then(() => {
+        .then(({ token } : any) => {
+          Cookies.set('token', token);
           resolve(true)
         })
         .catch((err) => {})

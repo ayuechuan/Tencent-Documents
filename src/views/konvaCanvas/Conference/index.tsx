@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { Group, Layer, Stage, Image, Line, Circle, Arc, Rect, Shape } from "react-konva";
+import { Group, Layer, Stage, Image, Line, Circle, Arc, Rect, Text, Shape, Path } from "react-konva";
 import { Html, Portal } from "react-konva-utils";
 import { Container } from "./components/container";
 import { createContext, PropsWithChildren } from "react";
@@ -19,6 +19,7 @@ import Plus from "tdesign-icons-react/lib/components/plus";
 import Minus from "tdesign-icons-react/lib/components/minus";
 import { haveIntersection } from "@/utils";
 import { useConference } from "./store/context";
+import { RectBorderNode } from "../SmartTable/canvas/createShapes/RectBorderNode";
 
 export const Conference = observer(() => {
   const store = useConference();
@@ -38,6 +39,13 @@ export const Conference = observer(() => {
   useMount(() => {
     store.layer = layerRef.current!;
     store.stage = stageRef.current!;
+
+    layerRef.current!.add(new RectBorderNode({
+      x: 200,
+      y: 600,
+      width: 200,
+      height: 200
+    }))
   })
 
 
@@ -93,6 +101,14 @@ export const Conference = observer(() => {
     // 开始动画
     animate();
   };
+
+
+  const rows = 7; // 总行数，包括空白行
+  const cols = 7; // 总列数，包括空白列
+  const cellWidth = 100; // 每个单元格的宽度
+  const cellHeight = 50; // 每个单元格的高度
+  const emptyRowIndex = [2, 4] as number[];
+  const emptyColumnIndex = [2] as number[];
 
 
   return (
@@ -223,6 +239,7 @@ export const Conference = observer(() => {
           width={innerWidth - 200}
           height={innerHeight - 50}
           ref={stageRef}
+          draggable={store.draggable}
           onWheel={(event) => void handleWheel(event)}
           onMouseMove={() => void store.onmouseMove()}
           onMouseDown={() => void store.onMouseDown()}
@@ -233,9 +250,150 @@ export const Conference = observer(() => {
         >
           {/* <GridLine /> */}
           <Layer ref={layerRef}>
+            {/* <Group >
+              {Array.from({ length: rows }).map((_, rowIndex) => {
+                const y = rowIndex * cellHeight; // 计算 y 坐标
+                // Y文本中心位置
+                const YCenter = (rowIndex) * cellHeight + cellHeight / 2 - 6;
+                // 如果当前行是空白行，跳过绘制
+                if (emptyRowIndex.includes(rowIndex)) {
+                  return (
+                    <Rect
+                      key={`empty-column-${rowIndex}-${Math.random()}`} // 唯一的 key 值
+                      x={cellWidth}
+                      y={y} // 矩形从顶部开始绘制
+                      width={cols * cellWidth - cellWidth} // 列宽
+                      height={cellHeight} // 总高度
+                      fill="pink" // 背景色
+                      opacity={0.5} // 透明度，可以调整
+                    />
+                  ); // 跳过空白行
+                }
+
+                return (
+                  Array.from({ length: cols }).map((_, colIndex) => {
+                    console.log('colIndex', rowIndex, colIndex);
+                    const x = colIndex * cellWidth; // 计算 x 坐标
+                    const xCenter = colIndex * cellWidth + cellWidth / 2 - 18; // 文本中心位置
+
+                    if (rowIndex === 0 && colIndex === 0) {
+                      return null;
+                    }
+
+                    // 如果当前列是空白列，跳过绘制
+                    if (emptyColumnIndex.includes(colIndex)) {
+                      return (
+                        <Rect
+                          key={`empty-column-${rowIndex}-${colIndex}`} // 唯一的 key 值
+                          x={x}
+                          y={cellHeight} // 矩形从顶部开始绘制
+                          width={cellWidth} // 列宽
+                          height={rows * cellHeight - cellHeight} // 总高度
+                          fill="pink" // 背景色
+                          opacity={0.5} // 透明度，可以调整
+                        />
+                      );
+                    }
+
+                    // 计算实际的行列索引，跳过空白行和列
+                    const actualRowIndex = emptyRowIndex.filter(i => i < rowIndex).length;
+                    const actualColIndex = emptyColumnIndex.filter(i => i < colIndex).length;
+                    let text = rowIndex === 0 ? `第${colIndex - actualColIndex}列` :
+                      colIndex === 0 ? `第${rowIndex - actualRowIndex}排` : '座位'
+
+                    return (
+                      <Group key={`group-${rowIndex}-${colIndex}`}>
+                        <Rect
+                          key={`cell-${rowIndex}-${colIndex}`}
+                          x={x}
+                          y={y}
+                          width={cellWidth}
+                          height={cellHeight}
+                          fill={`${colIndex === 0 ? '#fff9e6' : rowIndex === 0 ? '#ebfaf7' : '#FFF'}`} // 单元格背景色
+                          stroke="#EEE" // 边框颜色
+                          strokeWidth={1} // 边框宽度
+                        />
+                        <Text
+                          key={`text-${rowIndex}-${colIndex}`}
+                          x={xCenter}
+                          y={YCenter}
+                          text={text}
+                          fontSize={14}
+                          align="center"
+                          verticalAlign="middle"
+                        // offsetX={cellWidth / 2}
+                        // offsetY={cellHeight / 2}
+                        />
+                      </Group>
+                    );
+                  })
+                );
+              })}
+            </Group> */}
+
+            {/* 可选：在单元格中添加文本 */}
+            {/* {Array.from({ length: rows }).map((_, rowIndex) => {
+              const y = rowIndex * cellHeight; // 计算 y 坐标
+
+              // 如果当前行是空白行，跳过绘制
+              if (rowIndex === emptyRowIndex) {
+                return null; // 跳过空白行
+              }
+
+              return (
+                Array.from({ length: cols }).map((_, colIndex) => {
+                  // 如果当前列是空白列，跳过绘制
+                  if (colIndex === emptyColumnIndex) {
+                    return null; // 跳过空白列
+                  }
+
+                  const x = colIndex * cellWidth + cellWidth / 2; // 文本中心位置
+
+                  return (
+                    <Text
+                      key={`text-${rowIndex}-${colIndex}`}
+                      x={x}
+                      y={y}
+                      text={`Row ${rowIndex + 1}, Col ${colIndex + 1}`}
+                      fontSize={14}
+                      align="center"
+                      verticalAlign="middle"
+                      offsetX={cellWidth / 2}
+                      offsetY={cellHeight / 2}
+                    />
+                  );
+                })
+              );
+            })} */}
+
             <FeatureLayer />
-            <Container />
-            <Highlight />
+            {/* <Container />
+              <Highlight />
+              <Circle
+                x={200}
+                y={200}
+                radius={12}
+                // radius={15}
+                fill={"pink"}
+                stroke={"red"}
+                strokeWidth={3}
+              />
+              <Path
+                data="M-7.5,9.8 Q0,16 7.5,10.8 C4.5,15 10,4 7.5,10.8 L0,20 Z"
+                fill="red"
+                stroke="red"
+                x={200}
+                y={200}
+                strokeWidth={2}
+              /> */}
+            {/* <Path
+              data={"M-7.5,10.8,Q0,16,7.5,10.8,L0,21Z"}
+              fill="red"
+              stroke="red"
+              x={200}
+              y={200}
+              strokeWidth={2}
+            /> */}
           </Layer>
           <Layer name="controls-layer" visible={true} />
         </Stage>

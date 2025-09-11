@@ -1,0 +1,15 @@
+.inputAndAdd-wrap {
+  display: flex;
+  align-items: center;
+  .input {
+    width: 200px;
+    height: 32px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+  }
+  .icon-add {
+    margin-left: 6px;
+    font-size: 18px;
+    color: #c5c5c5;
+  }
+}

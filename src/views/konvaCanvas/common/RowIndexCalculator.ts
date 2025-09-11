@@ -37,3 +37,43 @@ export class RowIndexCalculator {
     return result;
   }
 }
+
+interface GetVisibleColumnIndicesProps {
+  columnWidth: number; // 每列的宽度
+  columnCount: number; // 列总数
+  offsetX: number; // 水平偏移量
+  containerWidth: number; // 容器宽度
+}
+
+export class ColumnIndexCalculator {
+  private cache: { [key: number]: { startColumnIndex: number; endColumnIndex: number } } = {};
+
+  getVisibleColumnIndices({
+    columnWidth,
+    columnCount,
+    offsetX,
+    containerWidth,
+  }: GetVisibleColumnIndicesProps): { startColumnIndex: number; endColumnIndex: number } {
+    // 使用offsetX作为缓存的键
+    if (this.cache[offsetX]) {
+      return this.cache[offsetX];
+    }
+
+    const startColumnIndex = Math.floor(offsetX / columnWidth);
+    const boundedStartColumnIndex = Math.max(0, startColumnIndex);
+
+    // 计算结束列索引
+    const endColumnIndex = Math.min(
+      columnCount - 1,
+      Math.floor((offsetX + containerWidth) / columnWidth)
+    );
+
+    const result = {
+      startColumnIndex: boundedStartColumnIndex,
+      endColumnIndex: endColumnIndex,
+    };
+    // 缓存结果
+    this.cache[offsetX] = result;
+    return result;
+  }
+}

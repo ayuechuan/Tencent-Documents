@@ -1,8 +1,8 @@
 import * as Comlink from 'comlink'
 
 import { Unsubscribable, WebWorkerContext } from '@/contexts/webWorker'
-import type { Iremote } from '@/worker/worker'
-import SheetsRemote from '@/worker/worker?worker'
+import type { Iremote } from '@/worker1/worker'
+import SheetsRemote from '@/worker1/worker?worker'
 
 export const WebWorkerProvider = ({ children }: any): React.ReactNode => {
   const [instance] = useState(() => {

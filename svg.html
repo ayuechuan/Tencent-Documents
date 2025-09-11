@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+
+  body{
+    background-color: #000000;
+    padding: 0;
+    overscroll-behavior-y: contain;
+    overscroll-behavior-x: none;
+    margin: 0;
+    background-image: radial-gradient(ellipse, rgb(27, 39, 53) 0%, rgb(9, 10, 15) 100%);
+  }
+  @keyframes animStar {
+    0% {
+        transform: translateY(0)
+    }
+
+    to {
+        transform: translateY(-2500px)
+    }
+}
+
+#smallstarsContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    animation: animStar 120s linear infinite;
+}
+
+#largestarsContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    animation: animStar 240s linear infinite
+}
+</style>
+<body>
+  <div id="smallstarsContainer"><div style="width: 100%; height: 2500px;"><svg xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><filter id="smallstars1"><feTurbulence baseFrequency="0.2" seed="128435"></feTurbulence><feColorMatrix values="
+    0 0 0 5 -3.1
+    0 0 0 5 -3.1
+    0 0 0 5 -3.1
+    0 0 0 0 1"></feColorMatrix><feColorMatrix values="
+    0 0 0 0 1
+    0 0 0 0 1
+    0 0 0 0 1
+    1 1 1 0 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#smallstars1)" clip-path="url(#cut-off-bottom)"></rect></svg></div><div style="width: 100%; height: 2500px;"><svg xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><filter id="smallstars2"><feTurbulence baseFrequency="0.2" seed="128435"></feTurbulence><feColorMatrix values="
+    0 0 0 5 -3.1
+    0 0 0 5 -3.1
+    0 0 0 5 -3.1
+    0 0 0 0 1"></feColorMatrix><feColorMatrix values="
+    0 0 0 0 1
+    0 0 0 0 1
+    0 0 0 0 1
+    1 1 1 0 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#smallstars2)" clip-path="url(#cut-off-bottom)"></rect></svg></div></div>
+
+    <div id="largestarsContainer"><div style="width: 100%; height: 2500px;"><svg xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><filter id="largestars1"><feTurbulence baseFrequency="0.05" seed="137862"></feTurbulence><feColorMatrix values="
+      0 0 0 5 -3.1
+      0 0 0 5 -3.1
+      0 0 0 5 -3.1
+      0 0 0 0 1"></feColorMatrix><feColorMatrix values="
+      0 0 0 0 1
+      0 0 0 0 1
+      0 0 0 0 1
+      1 1 1 0 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#largestars1)" clip-path="url(#cut-off-bottom)"></rect></svg></div><div style="width: 100%; height: 2500px;"><svg xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><filter id="largestars2"><feTurbulence baseFrequency="0.05" seed="137862"></feTurbulence><feColorMatrix values="
+      0 0 0 5 -3.1
+      0 0 0 5 -3.1
+      0 0 0 5 -3.1
+      0 0 0 0 1"></feColorMatrix><feColorMatrix values="
+      0 0 0 0 1
+      0 0 0 0 1
+      0 0 0 0 1
+      1 1 1 0 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#largestars2)" clip-path="url(#cut-off-bottom)"></rect></svg></div></div>
+  </body>
+</html>
