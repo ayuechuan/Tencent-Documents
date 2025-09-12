@@ -64,8 +64,6 @@ export default class MainThreadWorker implements IMainThreadAction {
         this.workerAbilityTest = new WorkerAbilityTest(this.controller, this);
         this.workerReport = new WorkerReport(this.controller, this);
         this.cookie = new Cookie(this.controller, this);
-
-       console.log(' this.cookie.getCookie()', this.cookie.getCookie());
        
         // debugger
         // AlloyWorkerAutoInsert: this.<%=AlloyWorkerPureActionNameLowerCase%> = new <%=AlloyWorkerPureActionName%>(this.controller, this);

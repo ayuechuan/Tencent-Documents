@@ -45,7 +45,7 @@ const App = ({ locales }: { locales: GlobalConfigProvider }) => {
 
     // API 完全一样
     alloyWorker.workerAbilityTest.communicationTest()
-      .then(result => console.log('我真的读了------',result))
+      .then(result => console.log('我真的读了----->>>>------',result))
   }, [])
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL as string}>

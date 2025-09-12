@@ -16,10 +16,7 @@ export default ({ command, mode }: ConfigEnv) => {
   console.log('Current environment configuration:', currentEnv) //loadEnv即加载根目录下.env.[mode]环境配置文件
   return defineConfig({
     plugins: [
-      alloyWorkerPlugin({
-        workerDir: 'src/worker',
-        outDir: 'dist'
-      }),
+      alloyWorkerPlugin(),
       react({ tsDecorators: true }),
       // comlink(),
       AutoImport({
@@ -60,10 +57,11 @@ export default ({ command, mode }: ConfigEnv) => {
         }
       }
     },
-
     // 全局变量定义
     define: {
-      __WORKER__: 'false'
+      __WORKER__: 'false',
+       '__MAIN_THREAD__': JSON.stringify(true),
+    '__WORKER_THREAD__': JSON.stringify(false),
     },
     //项目部署的基础路径,
     base: currentEnv.VITE_PUBLIC_PATH,
@@ -143,110 +141,65 @@ export default ({ command, mode }: ConfigEnv) => {
       // sourcemap: mode != 'production',
       sourcemap: false,
       chunkSizeWarningLimit: 2000,
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('html2canvas')) {
-              return 'html2canvas'
-            }
-            if (id.includes('node_modules')) {
-              return 'modules'
-            }
-          },
-          assetFileNames: (assinfo) => {
-            if (assinfo.name.includes('css')) {
-              return 'css/[name]-[hash][extname]'
-            }
-            //  图片资源后缀集合
-            const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'avif', 'tiff', 'bmp']
-            //  图片资源
-            if (imgExt.includes(assinfo.name.split('.')[1])) {
-              return 'images/[name]-[hash][extname]'
-            }
-            return 'js/[name]-[hash][extname]'
-          },
-          // chunkFileNames: 'js/[name]-[hash].js',
-          // entryFileNames: 'js/[name]-[hash].js',
-          // assetFileNames: "[ext]/[name]-[hash].[ext]"
+      // rollupOptions: {
+      //   output: {
+      //     manualChunks: (id) => {
+      //       if (id.includes('html2canvas')) {
+      //         return 'html2canvas'
+      //       }
+      //       if (id.includes('node_modules')) {
+      //         return 'modules'
+      //       }
+      //     },
+      //     assetFileNames: (assinfo) => {
+      //       if (assinfo.name.includes('css')) {
+      //         return 'css/[name]-[hash][extname]'
+      //       }
+      //       //  图片资源后缀集合
+      //       const imgExt = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'avif', 'tiff', 'bmp']
+      //       //  图片资源
+      //       if (imgExt.includes(assinfo.name.split('.')[1])) {
+      //         return 'images/[name]-[hash][extname]'
+      //       }
+      //       return 'js/[name]-[hash][extname]'
+      //     },
+      //     // chunkFileNames: 'js/[name]-[hash].js',
+      //     // entryFileNames: 'js/[name]-[hash].js',
+      //     // assetFileNames: "[ext]/[name]-[hash].[ext]"
+      //   },
+      // },
+      cssCodeSplit: true,
+       rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        'worker-thread': resolve(__dirname, 'src/woker/worker-thread/index.ts'),
+      },
+      output: {
+        entryFileNames: (chunkInfo) => {
+          return chunkInfo.name === 'worker-thread' 
+            ? 'worker-thread-[hash].js' 
+            : '[name]-[hash].js';
         },
       },
-      cssCodeSplit: true,
+    },
     },
   })
 }
 
 
 
-// 简化的 AlloyWorker 插件
-// export function alloyWorkerPlugin(): Plugin {
-//   return {
-//     name: 'vite-plugin-alloy-worker',
-    
-//     config(config) {
-//       // 确保 worker 文件被正确处理
-//       config.worker = config.worker || {}
-//       config.worker.format = 'es'
-
-//       // 添加全局变量定义 - 主线程中 __WORKER__ = false
-//       config.define = config.define || {}
-//       config.define.__WORKER__ = 'false'
-//     },
-
-//     configureServer() {
-//       // 开发环境配置
-//     }
-//   }
-// }
-
-export function alloyWorkerPlugin(options: any): Plugin {
-  const { workerDir = 'src/worker', outDir = 'dist' } = options
-
+export  function alloyWorkerPlugin(): Plugin {
   return {
     name: 'vite-plugin-alloy-worker',
-    // 处理 alloy-worker! 前缀的导入
-    resolveId(id) {
-      if (id.startsWith('alloy-worker!')) {
-        const workerPath = id.replace('alloy-worker!', '')
-        return `\0alloy-worker:${workerPath}`
+    transform(code, id) {
+      // 处理 Alloy Worker 的特殊注释和语法
+      if (id.includes('alloy-worker')) {
+        // 替换 Webpack 特定的语法
+        return code
+          .replace(/import\s+(\w+)\s+from\s+'alloy-worker!([^']+)'/g, 'import $1 from "$2?worker"')
+          .replace(/__WORKER__/g, 'false'); // 根据实际情况调整
       }
+      return code;
     },
-
-    // 加载 worker 文件并返回 URL
-    load(id) {
-      if (id.startsWith('\0alloy-worker:')) {
-        const workerPath = id.replace('\0alloy-worker:', '')
-
-        return `
-          // @ts-nocheck
-          const workerUrl = new URL('${workerPath}?worker', import.meta.url)
-          export default workerUrl.href
-        `
-      }
-    },
-
-    // 配置构建选项
-    config(config, { command }) {
-      // 确保 worker 文件被正确处理
-      config.worker = config.worker || {}
-      config.worker.format = 'es'
-
-      // 添加全局变量定义
-      config.define = config.define || {}
-      config.define.__WORKER__ = 'false'
-
-      // Worker 构建时的全局变量
-      config.worker.plugins = config.worker.plugins || []
-      config.worker.plugins.push({
-        name: 'worker-env',
-        config() {
-          return {
-            define: {
-              __WORKER__: 'true',
-              'self.window': 'self'
-            }
-          }
-        }
-      })
-    }
-  }
+  };
 }

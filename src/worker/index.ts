@@ -18,7 +18,62 @@ import MainThreadWorker from './main-thread/index';
 // 使用 Vite 的 worker 导入语法
 // import WorkerThreadWorker from './worker-thread/index?worker'
 // 这里用 &url 版本
+// import WorkerThreadWorkerUrl from './worker-thread/index?worker&url'
+// Vite Worker URL 导入
 import WorkerThreadWorkerUrl from './worker-thread/index?worker&url'
+
+
+// export function getWorkerUrl(isDebugMode: boolean): string {
+//   let workerUrl = URL.createObjectURL(
+//     new Blob([`importScripts("${WorkerThreadWorkerUrl}")`], { type: 'application/javascript' })
+//   );
+  
+//   if (!isDebugMode) {
+//     return workerUrl;
+//   }
+  
+//   const debugModeSearch = `debugWorker=true`;
+//   workerUrl = workerUrl.indexOf('?') > 0 
+//     ? `${workerUrl}&${debugModeSearch}` 
+//     : `${workerUrl}?${debugModeSearch}`;
+  
+//   return workerUrl;
+// }
+
+
+export function getWorkerUrl(isDebugMode: boolean): string {
+  // 在开发模式下直接使用 Worker 模块
+  if (import.meta.env.DEV) {
+    const workerUrl = new URL(WorkerThreadWorkerUrl, import.meta.url).href;
+    
+    if (!isDebugMode) {
+      return workerUrl;
+    }
+    
+    const debugModeSearch = `debugWorker=true`;
+    return workerUrl.indexOf('?') > 0 
+      ? `${workerUrl}&${debugModeSearch}` 
+      : `${workerUrl}?${debugModeSearch}`;
+  }
+  
+  // 生产模式下创建 Blob URL
+  const workerBlob = new Blob([`importScripts("${WorkerThreadWorkerUrl}")`], { 
+    type: 'application/javascript' 
+  });
+  let workerUrl = URL.createObjectURL(workerBlob);
+  
+  if (!isDebugMode) {
+    return workerUrl;
+  }
+  
+  const debugModeSearch = `debugWorker=true`;
+  workerUrl = workerUrl.indexOf('?') > 0 
+    ? `${workerUrl}&${debugModeSearch}` 
+    : `${workerUrl}?${debugModeSearch}`;
+  
+  return workerUrl;
+}
+
 
 /**
  * 主线程, 将上报代理替换为真实上报模块
@@ -57,7 +112,7 @@ export default function createAlloyWorker(options: Omit<IAlloyWorkerOptions, 'wo
     //     workerUrl
     // });
 
-    let workerUrl = WorkerThreadWorkerUrl  as any;
+    let workerUrl = getWorkerUrl(true)  as any;
     if (isDebugMode) {
         console.log('workerUrl',workerUrl);
         
@@ -68,7 +123,7 @@ export default function createAlloyWorker(options: Omit<IAlloyWorkerOptions, 'wo
     }
 
     // workerUrl = '/Td/src/worker/worker-thread/index.ts?worker'
-     workerUrl = new URL('${workerPath}?worker', import.meta.url).href
+    //  workerUrl = new URL('${workerPath}?worker', import.meta.url).href
         console.log('workerUrl',workerUrl);
     const mainThreadWorker = new MainThreadWorker({
         ...options,
@@ -81,26 +136,26 @@ export default function createAlloyWorker(options: Omit<IAlloyWorkerOptions, 'wo
     return mainThreadWorker;
 }
 
-/**
- * 从全局获取 worker url, 并且根据页面 url 参数设置 worker url 参数
- *
- * @param isDebugMode
- */
-export function getWorkerUrl(isDebugMode: boolean): string {
-    /**
-     * 在构建时替换为 worker 资源 url 字符串
-     * dev: alloy-worker.js
-     * dist: alloy-worker-51497b48.js
-     */
-    let workerUrl = `'/Td/src/worker/worker-thread/index.ts?worker'` as any;
+// /**
+//  * 从全局获取 worker url, 并且根据页面 url 参数设置 worker url 参数
+//  *
+//  * @param isDebugMode
+//  */
+// export function getWorkerUrl(isDebugMode: boolean): string {
+//     /**
+//      * 在构建时替换为 worker 资源 url 字符串
+//      * dev: alloy-worker.js
+//      * dist: alloy-worker-51497b48.js
+//      */
+//     let workerUrl = `'/Td/src/worker/worker-thread/index.ts?worker'` as any;
 
-    if (!isDebugMode) {
-        return workerUrl;
-    }
+//     if (!isDebugMode) {
+//         return workerUrl;
+//     }
 
-    // 通过 Worker url 传递调试参数到 Worker 线程中
-    const debugModeSearch = `debugWorker=true`;
-    workerUrl = workerUrl.indexOf('?') > 0 ? `${workerUrl}&${debugModeSearch}` : `${workerUrl}?${debugModeSearch}`;
+//     // 通过 Worker url 传递调试参数到 Worker 线程中
+//     const debugModeSearch = `debugWorker=true`;
+//     workerUrl = workerUrl.indexOf('?') > 0 ? `${workerUrl}&${debugModeSearch}` : `${workerUrl}?${debugModeSearch}`;
 
-    return workerUrl;
-}
+//     return workerUrl;
+// }

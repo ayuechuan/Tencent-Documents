@@ -18,12 +18,14 @@ if (typeof window === 'undefined' && typeof self !== 'undefined') {
     self.window = self;
 }
 
+console.log('self===>>>>>>>window',self);
+ self.window = self;
+
 import Controller from './controller';
 import WorkerAbilityTest from './worker-ability-test';
 import WorkerReport from './worker-report';
 import Cookie from './cookie';
 // AlloyWorkerAutoInsert: import <%=AlloyWorkerPureActionName%> from './<%=AlloyWorkerActionName%>';
-debugger
 
 // 只声明事务命名空间, 用于事务中调用其他命名空间的事务
 export interface IWorkerThreadAction {
@@ -68,10 +70,6 @@ if (typeof window === 'undefined' && typeof self !== 'undefined') {
 }
 // 新建 Worker 线程的 AlloyWorker
 const alloyWorker = new WorkerThreadWorker();
-
-
-debugger
-
 
 // 将 alloyWorker 挂载到 Worker 线程的全局环境, 可用于调试
 // @ts-ignore

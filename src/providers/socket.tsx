@@ -13,7 +13,7 @@ export const SocketProvider = ({ children }: React.PropsWithChildren) => {
       reconnectionDelay: 2000,
       reconnectionDelayMax: 2000,
       reconnectionAttempts: 10,
-      reconnection: true,
+      reconnection: false,
       transports: ['websocket', 'polling'],
       transportOptions: {
         polling: {

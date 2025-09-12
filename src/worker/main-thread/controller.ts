@@ -68,6 +68,7 @@ export default class Controller extends BaseController {
                 type : 'module'
             });
 
+
             console.log('options.workerUrl',this.worker);
             
 

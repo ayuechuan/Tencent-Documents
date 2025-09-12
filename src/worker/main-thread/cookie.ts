@@ -13,8 +13,22 @@ export default class Cookie extends BaseAction {
     /**
      * 获取 cookie 处理器
      */
-    private getCookie(): WorkerReponse.Cookie.Cookie {
-        const cookie = document.cookie;
-        return cookie;
+    private getCookie() {
+        // const cookie = document.cookie;
+        // return cookie;
+        // 验证当前执行环境
+        if (typeof document !== 'undefined') {
+            console.error('错误：这个方法应该在 Worker 线程执行！');
+            throw new Error('Method should run in worker thread');
+        }
+        return fibonacci(40);
+
     }
+}
+
+function fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
