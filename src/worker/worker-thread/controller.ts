@@ -9,7 +9,7 @@ import { WorkerMonitorId } from '../common/report-type';
 export default class Controller extends BaseController {
     public constructor() {
         super();
-
+        debugger
         // 从 Worker url 获取调试模式标志位
         if (location.href.indexOf('debugWorker=true') >= 0) {
             this.isDebugMode = true;

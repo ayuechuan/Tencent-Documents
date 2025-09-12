@@ -8,7 +8,7 @@ import axios from 'axios'
 import sync, { cancelSync, flushSync, getFrameData } from 'framesync'
 import ReactDOM from 'react-dom/client'
 import { GlobalConfigProvider } from 'tdesign-react/esm/config-provider/type'
-
+import createAlloyWorker from '@/worker'
 // import localses from 'tdesign-react/esm/locale/zh_CN'
 
 export class Bootstrap {
@@ -43,6 +43,29 @@ export class Bootstrap {
 
     // 开始监听页面性能
     observer.observe({ entryTypes: ['paint'] })
+
+
+
+
+    // 初始化 AlloyWorker
+    const alloyWorker = createAlloyWorker({
+      workerName: 'my-alloy-worker',
+      isDebugMode: true // 开发环境下启用调试
+    })
+
+    console.log('99',alloyWorker);
+    
+
+    // 使用 Worker 功能
+    if (alloyWorker) {
+    //   alloyWorker.cookie.getCookie()
+    //     .then(result => {
+    //       console.log('1111111Worker communication test result:', result)
+    //     })
+    //     .catch(error => {
+    //       console.error('1111111Worker communication test failed:', error)
+    //     })
+    }
   }
 
   public async render(): Promise<void> {
@@ -143,7 +166,7 @@ export class Bootstrap {
       stop: () => cancelSync.update(passTimestamp),
     }
   }
-    
+
   public async mount() {
     this.reactDomRootElement = ReactDOM.createRoot(this.root)
     const locales = await this.loadLocales()
@@ -240,12 +263,12 @@ export class Bootstrap {
     const observer = new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries()
       for (const entry of entries) {
-        console.log('检测耗时任务===',entry.duration, entry.name)
+        console.log('检测耗时任务===', entry.duration, entry.name)
       }
     })
 
     observer.observe({
-      entryTypes: ['longtask'  , 'measure'],
+      entryTypes: ['longtask', 'measure'],
     })
   }
 

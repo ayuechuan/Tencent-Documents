@@ -37,7 +37,7 @@ export default class ChannelReport {
             const requestDurationInfo = {
                 actionType,
                 duration: requestDuration,
-                inWorker: importScripts,
+                inWorker: typeof importScripts !== 'undefined',
             };
 
             reportProxy.weblog({
@@ -55,9 +55,10 @@ export default class ChannelReport {
      */
     public onmesssageDebugLog(message: IMessage): void {
         // 主线程和 worker 线程通信是对等的, 只需在 worker 线程中打 log, 避免主线程打日志耗时
-  if (typeof importScripts !== 'undefined') {
-    return;
-  }
+
+        if (typeof importScripts === 'undefined') {
+            return;
+        }
         // 根据调试标志位展示
         if (!this.isDebugMode) {
             return;
@@ -82,9 +83,10 @@ export default class ChannelReport {
      * @param message 发送的会话消息
      */
     public postMessageDebugLog(message: IMessage): void {
-       if (typeof importScripts !== 'undefined') {
-    return;
-  }
+        // 修复：应该在 Worker 线程中打日志，不是主线程
+        if (typeof importScripts === 'undefined') {
+            return;
+        }
         // 根据调试标志位展示
         if (!this.isDebugMode) {
             return;

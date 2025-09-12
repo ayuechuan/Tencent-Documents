@@ -15,8 +15,10 @@ import MainThreadWorker from './main-thread/index';
  * 使得同构逻辑中的 import 可以引用到真实的 worker thread.
  */
 // import workerThreadWorker from 'alloy-worker!./worker-thread';
-// 改为 Vite 的方式
-import WorkerThreadWorker from './worker-thread/index?worker'
+// 使用 Vite 的 worker 导入语法
+// import WorkerThreadWorker from './worker-thread/index?worker'
+// 这里用 &url 版本
+import WorkerThreadWorkerUrl from './worker-thread/index?worker&url'
 
 /**
  * 主线程, 将上报代理替换为真实上报模块
@@ -31,32 +33,48 @@ ReportProxy.eachLoad(report);
  * @returns {MainThreadWorker} Alloy Worker 实例
  */
 export default function createAlloyWorker(options: Omit<IAlloyWorkerOptions, 'workerUrl'>): MainThreadWorker {
-    /**
-     * 主线程代码和 Worker 线程代码可以在同一个文件/函数中调用(即同构)
-     * 在 Worker 线程中引入主线程代码, 在该 Worker 线程 createAlloyWorker 会新建一个 Worker 线程
-     * 新的 Worker 线程会再次新建, 导致"循环调用"
-     */
-    // 主线程才去实例化 Worker, Worker 线程直接返回
-    // if (__WORKER__) {
-    //     // @ts-ignore
-    //     return;
-    // }
-    // 使用 Vite 的 worker URL
-    let workerUrl = WorkerThreadWorker as any;
-
-    if (options.isDebugMode) {
-        const debugParam = 'debugWorker=true'
-        workerUrl = workerUrl.includes('?')
-            ? `${workerUrl}&${debugParam}`
-            : `${workerUrl}?${debugParam}`
+    if (typeof importScripts !== 'undefined') {
+        // @ts-ignore
+        return undefined;
     }
 
+    // 传递 Worker 调试参数
+    const isDebugMode = options.isDebugMode || location.href.indexOf('debugWorker=true') >= 0;
+
+    // 获取 Worker URL
+    // let workerUrl = WorkerThreadWorker as any;
+
+    // if (isDebugMode) {
+    //     const debugParam = 'debugWorker=true';
+    //     workerUrl = workerUrl.includes('?') 
+    //         ? `${workerUrl}&${debugParam}` 
+    //         : `${workerUrl}?${debugParam}`;
+    // }
+
+    // const mainThreadWorker = new MainThreadWorker({
+    //     ...options,
+    //     isDebugMode,
+    //     workerUrl
+    // });
+
+    let workerUrl = WorkerThreadWorkerUrl  as any;
+    if (isDebugMode) {
+        console.log('workerUrl',workerUrl);
+        
+        const debugParam = 'debugWorker=true';
+        workerUrl = workerUrl.includes('?')
+            ? `${workerUrl}`
+            : `${workerUrl}`;
+    }
+
+    // workerUrl = '/Td/src/worker/worker-thread/index.ts?worker'
+     workerUrl = new URL('${workerPath}?worker', import.meta.url).href
+        console.log('workerUrl',workerUrl);
     const mainThreadWorker = new MainThreadWorker({
         ...options,
-        isDebugMode: options.isDebugMode,
+        isDebugMode,
         workerUrl
-    })
-
+    });
     // Worker 状态监测
     mainThreadWorker.startWorkerStatusCheck();
 
@@ -74,7 +92,7 @@ export function getWorkerUrl(isDebugMode: boolean): string {
      * dev: alloy-worker.js
      * dist: alloy-worker-51497b48.js
      */
-    let workerUrl = WorkerThreadWorker as any;
+    let workerUrl = `'/Td/src/worker/worker-thread/index.ts?worker'` as any;
 
     if (!isDebugMode) {
         return workerUrl;

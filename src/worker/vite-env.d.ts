@@ -1,9 +1,8 @@
 /// <reference types="vite/client" />
 
-declare const __WORKER__: boolean
-
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
+  readonly VITE_PUBLIC_PATH: string
 }
 
 interface ImportMeta {
@@ -15,3 +14,7 @@ declare module '*?worker' {
   const workerConstructor: string
   export default workerConstructor
 }
+
+// Worker 全局声明
+declare var self: any
+declare function importScripts(...urls: string[]): void

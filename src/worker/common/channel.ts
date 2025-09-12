@@ -97,7 +97,7 @@ export default class Channel {
 
             this.channelReport.timeoutReport({
                 actionType,
-                isInWorker: __WORKER__,
+                isInWorker: typeof importScripts !== 'undefined',
             });
         }, timeout);
 

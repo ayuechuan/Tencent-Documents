@@ -10,7 +10,7 @@ import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv) => {
-  
+
   const currentEnv = loadEnv(mode, process.cwd())
   console.log('Current mode:', command, mode)
   console.log('Current environment configuration:', currentEnv) //loadEnv即加载根目录下.env.[mode]环境配置文件
@@ -176,6 +176,27 @@ export default ({ command, mode }: ConfigEnv) => {
 }
 
 
+
+// 简化的 AlloyWorker 插件
+// export function alloyWorkerPlugin(): Plugin {
+//   return {
+//     name: 'vite-plugin-alloy-worker',
+    
+//     config(config) {
+//       // 确保 worker 文件被正确处理
+//       config.worker = config.worker || {}
+//       config.worker.format = 'es'
+
+//       // 添加全局变量定义 - 主线程中 __WORKER__ = false
+//       config.define = config.define || {}
+//       config.define.__WORKER__ = 'false'
+//     },
+
+//     configureServer() {
+//       // 开发环境配置
+//     }
+//   }
+// }
 
 export function alloyWorkerPlugin(options: any): Plugin {
   const { workerDir = 'src/worker', outDir = 'dist' } = options

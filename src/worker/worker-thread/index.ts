@@ -12,12 +12,18 @@
  */
 // @ts-ignore
 self.name = self.name || `worker_${Date.now().toString().slice(-6)}`;
+// Worker 线程环境适配 - 放在最前面
+if (typeof window === 'undefined' && typeof self !== 'undefined') {
+    // @ts-ignore
+    self.window = self;
+}
 
 import Controller from './controller';
 import WorkerAbilityTest from './worker-ability-test';
 import WorkerReport from './worker-report';
 import Cookie from './cookie';
 // AlloyWorkerAutoInsert: import <%=AlloyWorkerPureActionName%> from './<%=AlloyWorkerActionName%>';
+debugger
 
 // 只声明事务命名空间, 用于事务中调用其他命名空间的事务
 export interface IWorkerThreadAction {
@@ -49,10 +55,11 @@ class WorkerThreadWorker implements IWorkerThreadAction {
         this.workerReport = new WorkerReport(this.controller, this);
         this.cookie = new Cookie(this.controller, this);
         // AlloyWorkerAutoInsert: this.<%=AlloyWorkerPureActionNameLowerCase%> = new <%=AlloyWorkerPureActionName%>(this.controller, this);
-
-        // this.cookie.getCookie().then((res) => {
-        //     console.log('document cookie:', res);
-        // });
+        console.log('必须执行-------');
+        
+        this.cookie.getCookie().then((res) => {
+            console.info('document cookie===>>>=:', res);
+        });
     }
 }
 if (typeof window === 'undefined' && typeof self !== 'undefined') {
@@ -61,6 +68,10 @@ if (typeof window === 'undefined' && typeof self !== 'undefined') {
 }
 // 新建 Worker 线程的 AlloyWorker
 const alloyWorker = new WorkerThreadWorker();
+
+
+debugger
+
 
 // 将 alloyWorker 挂载到 Worker 线程的全局环境, 可用于调试
 // @ts-ignore

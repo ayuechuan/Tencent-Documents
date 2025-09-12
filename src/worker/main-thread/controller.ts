@@ -65,7 +65,11 @@ export default class Controller extends BaseController {
             // 主线程通过 new Worker() 获取 Worker 实例
             this.worker = new Worker(options.workerUrl, {
                 name: options.workerName,
+                type : 'module'
             });
+
+            console.log('options.workerUrl',this.worker);
+            
 
             /**
              * 监控和上报 worker 中的报错
