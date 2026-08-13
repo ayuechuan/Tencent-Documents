@@ -1,3 +1,5 @@
+
+
 # Vite5, React18 (A simple generic example template)
 
 This starter template includes:
@@ -9,7 +11,7 @@ This starter template includes:
 - [framer-motion](https://www.framer.com/motion/introduction/): It powers the amazing animations and interactions in Framer, the web builder for creative pros. Zero code, maximum speed.(If you don't need it, you can delete it.)
 - Docker support.
 - Introduce typescript, use tsx writing style.
-- Aktiver Eslint,prettier,husky,stylelint, automatisk specifikation af projektkode.
+- Enable Eslint, Prettier, Husky, and Stylelint for automatic project code formatting.
 
 Unplugin Utilities:
 
